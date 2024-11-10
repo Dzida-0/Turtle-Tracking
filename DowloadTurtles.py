@@ -6,6 +6,7 @@ import requests
 
 class DownloadTurtles:
     def __init__(self):
+        self._last_downloaded_turtle = []
         self._connected = self.check_connection()
         self._possible_turtles = {}
         self._full_data = pd.DataFrame()
@@ -92,11 +93,60 @@ class DownloadTurtles:
         """
         return self._possible_turtles
 
-    def download_turtle_data(self,turtle_id):
-        pass
+    def download_turtle_data(self, turtle_id) -> bool:
+        """
 
-    def get_turtle_data(self,turtle_id):
-        pass
+        :param turtle_id:
+        :return:
+        """
+        if not self.check_connection():
+            logging.warning("No internet connection")
+            return False
+        url = f"https://stc.mapotic.com/api/v1/poi/{turtle_id}/move/?page_size=10000"
+        try:
+            response = requests.get(url, timeout=5)
+            response.raise_for_status()
+            data = response.json()
+            turtles_points = []
+            if 'results' in data:
+                for point in data['results']:
+                    point_data = point.get('data', {})
+                    turtles_points.append({
+                        'latitude': point_data.get('Lat', None),
+                        'longitude': point_data.get('Lng', None),
+                        'distance': point_data.get('Distance', None),
+                        'duration': point_data.get('Duration', None),
+                        'direction': point_data.get('Direction', None),
+                        'time': point_data.get('CollectedDateTime', None)
+
+                    })
+
+                    self._last_downloaded_turtle = [pd.DataFrame(turtles_points,
+                                                                 columns=['latitude', 'longitude', 'distance',
+                                                                          'duration', 'direction', 'time']),
+                                                    self._full_data[self._full_data['id'] == 2]]
+
+            else:
+                raise ValueError
+
+            return True
+
+        except requests.exceptions.HTTPError as http_err:
+            logging.error(f"HTTP error occurred: {http_err}")
+        except requests.exceptions.RequestException as req_err:
+            logging.error(f"Request error occurred: {req_err}")
+        except ValueError:
+            logging.error("Failed to decode JSON from response")
+        except KeyError as key_err:
+            logging.error(f"Key missing in JSON response: {key_err}")
+        return False
+
+    def get_last_turtle_data(self) -> list:
+        """
+
+        :return:
+        """
+        return self._last_downloaded_turtle
 
     def test(self):
         return self._full_data
