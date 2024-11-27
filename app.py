@@ -34,6 +34,7 @@ app.layout = html.Div([
     ])
 ])
 
+
 # Callbacks for navigation
 @app.callback(
     Output("page-content", "children"),
@@ -58,6 +59,7 @@ def render_page(home_clicks, about_clicks):
             html.P("Click a button to navigate.")
         ])
 
+
 # Callback for downloading the file
 @app.callback(
     Output("file-download", "data"),
@@ -66,6 +68,7 @@ def render_page(home_clicks, about_clicks):
 def download_file(n_clicks):
     if n_clicks:
         download_turtles_info()
+
 
 # Run the server
 if __name__ == "__main__":
