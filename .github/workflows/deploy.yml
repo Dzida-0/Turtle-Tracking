@@ -39,7 +39,7 @@ jobs:
       - name: Create Elastic Beanstalk Environment
         run: |
           eb init -p python-3.11 my-dash-app --region eu-central-1
-          eb create my-dash-app-env --region eu-central-1
+          eb create my-dash-app-env2 --region eu-central-1
 
       # Deploy to Elastic Beanstalk
       - name: Deploy to Elastic Beanstalk
