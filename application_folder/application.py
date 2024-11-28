@@ -29,8 +29,7 @@ app.layout = html.Div([
 
     # Download button
     html.Div([
-        html.Button("Download Data", id="download-btn"),
-        dcc.Download(id="file-download"),
+        html.Button("Download Data", id="download-btn")
     ])
 ])
 
@@ -58,16 +57,6 @@ def render_page(home_clicks, about_clicks):
             html.H2("Default Page"),
             html.P("Click a button to navigate.")
         ])
-
-
-# Callback for downloading the file
-@app.callback(
-    Output("file-download", "data"),
-    [Input("download-btn", "n_clicks")]
-)
-def download_file(n_clicks):
-    if n_clicks:
-        download_turtles_info()
 
 
 # Run the server

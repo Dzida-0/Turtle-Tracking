@@ -1,18 +1,22 @@
 branch-defaults:
   develop:
-    environment: Turtle-Tracking-dev
+    environment: dash-env
     group_suffix: null
+environment-defaults:
+  dash-env:
+    branch: null
+    repository: null
 global:
-  application_name: Turtle-Tracking
-  branch: develop
-  default_ec2_keyname: your-key-pair-name
-  default_platform: Python 3.11 running on 64bit Amazon Linux 2023
+  application_name: dash-app
+  branch: null
+  default_ec2_keyname: AKIAYDWHTIBGI73GXNOY
+  default_platform: Python 3.11
   default_region: eu-central-1
   include_git_submodules: true
-  instance_profile: aws-elasticbeanstalk-ec2-role
+  instance_profile: null
   platform_name: null
   platform_version: null
-  profile: default
+  profile: eb-cli
   repository: null
   sc: git
   workspace_type: Application
