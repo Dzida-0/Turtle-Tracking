@@ -10,17 +10,21 @@ class TestDownloadData(unittest.TestCase):
     # Test for check_connection function
     @patch('requests.get')
     def test_check_connection(self, mock_get):
-        # Simulate a successful response
+        # Successful connection
         mock_get.return_value.status_code = 200
-        self.assertTrue(check_connection())
+        self.assertDictEqual({True: ""}, check_connection())
 
-        # Simulate a failed response
-        mock_get.return_value.status_code = 404
-        self.assertFalse(check_connection())
+        # HTTP error
+        mock_get.return_value.raise_for_status = requests.exceptions.HTTPError("404 Client Error: Not Found for url")
+        self.assertDictEqual({False: "HTTP error occurred: 404 Client Error: Not Found for url"}, check_connection())
 
-        # Simulate an exception (e.g., Timeout)
+        # Timeout exception
         mock_get.side_effect = requests.Timeout
-        self.assertFalse(check_connection())
+        self.assertDictEqual({False: "Timeout error occurred: "}, check_connection())
+
+        # Request exception
+        mock_get.side_effect = requests.exceptions.RequestException("Request error")
+        self.assertDictEqual({False: "Request error occurred: Request error"}, check_connection())
 
 
 if __name__ == '__main__':
