@@ -26,6 +26,10 @@ class TestDownloadData(unittest.TestCase):
         mock_get.side_effect = requests.exceptions.RequestException("Request error")
         self.assertDictEqual({False: "Request error occurred: Request error"}, check_connection())
 
+    @patch('requests.get')
+    def test_download_turtles_info(self, mock_get):
+        # Successful download
+
 
 if __name__ == '__main__':
     unittest.main()

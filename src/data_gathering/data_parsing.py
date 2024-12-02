@@ -1,13 +1,15 @@
 import json
 import logging
 import os
-from typing import Optional, Dict
+from typing import Optional, Dict, List, Tuple
 
 from time import sleep
+
+
 # TO DO
 # adult kid
 
-def remove_HTML_elements(text:str) -> str:
+def remove_HTML_elements(text: str) -> str:
     """
     Remove unnecessary HTML elements form text.
     :param text: Text
@@ -21,15 +23,15 @@ def remove_HTML_elements(text:str) -> str:
         stop = text.find('>')
         if start > 0 and stop > 0:
             new_text = text[:start]
-            if text[start-1] != " ":
+            if text[start - 1] != " ":
                 new_text += " "
-            new_text += text[stop+1:]
+            new_text += text[stop + 1:]
             text = new_text
             h = True
     return text
 
 
-def parse_description(description: str) -> None:
+def parse_description(description: str) -> Tuple:
     """
 
     :param description:
@@ -40,8 +42,8 @@ def parse_description(description: str) -> None:
     description = remove_HTML_elements(description)
     d = description.split(" ")
 
-    she_count = sum(d.count(i) for i in["she","She","female","Female","her","Her"])
-    he_count = sum(d.count(i) for i in["he","He","male","Male","his","His"])
+    she_count = sum(d.count(i) for i in ["she", "She", "female", "Female", "her", "Her"])
+    he_count = sum(d.count(i) for i in ["he", "He", "male", "Male", "his", "His"])
     turtle_sex = None
     if she_count > he_count >= 0:
         turtle_sex = "Female"
@@ -49,13 +51,17 @@ def parse_description(description: str) -> None:
         turtle_sex = "Male"
 
     turtle_age = None
-    adult_count = sum(d.count(i) for i in["adult","Adult"])
-    kid_count = sum(d.count(i) for i in ["immature", "juvenile","sub-adult"])
+    adult_count = sum(d.count(i) for i in ["adult", "Adult"])
+    kid_count = sum(d.count(i) for i in ["immature", "juvenile", "sub-adult"])
     if adult_count > kid_count >= 0:
         turtle_age = "Adult"
     elif kid_count > adult_count >= 0:
         turtle_age = "Sub-adult"
 
+    length = None
+    length_type = None
+    width = None
+    width_type = None
     while "cm" in d:
         e = d.index("cm")
         dd = d[e:]
@@ -63,7 +69,6 @@ def parse_description(description: str) -> None:
             f = dd.index("length")
             if f <= 5:
                 length = d[e - 1]
-                length_type = ""
                 if "curved" in d[e:e + f]:
                     length_type = "curved"
                 elif "straight" in d[e:e + f]:
@@ -73,7 +78,6 @@ def parse_description(description: str) -> None:
             f = dd.index("width")
             if f <= 5:
                 width = d[e - 1]
-                width_type = ""
                 if any(substr in d[e:e + f] for substr in ["curved", "CCL"]):
                     width_type = "curved"
                 elif any(substr in d[e:e + f] for substr in ["straight", "SCL"]):
@@ -81,28 +85,47 @@ def parse_description(description: str) -> None:
                 print(width, width_type, "width")
         d.remove(d[e])
 
+    return turtle_sex, turtle_age, length, length_type, width, width_type
+
 
 def parse_turtle_info() -> None:
     try:
         with open("../../data/raw/turtles_info.json", "r") as f:
             data = json.load(f)
+        tab = []
         for turtle in data:
             id = turtle.get("id", "")
             name = turtle.get("name", "")
             last_position = turtle.get("point", "").get("coordinates", "")
+            active_turtle = None
+            turtle_sex = None
+            turtle_age = None
+            length = None
+            length_type = None
+            width = None
+            width_type = None
+            project_name = None
+            biography = None
+            description = None
             for attribute in turtle.get("attributes", []):
                 if attribute.get("code", "") == "is_active":
                     active_turtle = attribute.get("value", "")
                 elif attribute.get("code", "") == "Description":
                     description = attribute.get("value", "")
                     if description is not None:
-                        parse_description(description)
-                        print(description)
-                        print()
+                        turtle_sex, turtle_age, length, length_type, width, width_type = parse_description(description)
                 elif attribute.get("code", "") == "Project":
                     project_name = attribute.get("value", "")
                 elif attribute.get("code", "") == "Biography":
                     biography = attribute.get("value", "")
+            tab.append([id,name,last_position,active_turtle,turtle_sex, turtle_age, length, length_type,
+                        width, width_type,project_name,biography,description])
+
+        columns = ["id","name","last_position","active_turtle","turtle_sex", "turtle_age", "length", "length_type",
+                        "width", "width_type","project_name","biography","description"]
+        os.makedirs("../../data/parsed", exist_ok=True)
+        with open("../../data/parsed/turtles_info.json", "w") as f:
+            json.dump([dict(zip(columns, row)) for row in tab],f)
 
     except FileNotFoundError:
         pass
@@ -110,4 +133,3 @@ def parse_turtle_info() -> None:
 
 if __name__ == '__main__':
     parse_turtle_info()
-
