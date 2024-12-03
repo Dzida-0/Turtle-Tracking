@@ -21,7 +21,7 @@ def remove_HTML_elements(text: str) -> str:
         h = False
         start = text.find('<')
         stop = text.find('>')
-        if start > 0 and stop > 0:
+        if start >= 0 and stop >= 0:
             new_text = text[:start]
             if text[start - 1] != " ":
                 new_text += " "

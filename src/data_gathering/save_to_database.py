@@ -3,7 +3,7 @@ import logging
 import sqlite3
 
 
-def save_new_turtles(db_path: str, json_file_path: str)-> bool:
+def save_all_turtles(db_path: str, json_file_path: str) -> bool:
     try:
         with open(json_file_path, 'r') as f:
             turtles_data = json.load(f)
