@@ -19,6 +19,7 @@
     <option name="TEMPLATE_FOLDERS">
       <list>
         <option value="$MODULE_DIR$/flask_test/templates" />
+        <option value="$MODULE_DIR$/flask_concept_1/templates" />
       </list>
     </option>
   </component>
