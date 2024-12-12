@@ -5,8 +5,14 @@
 {% endblock %}
 
 {% block body %}
-    <form>
-        <input type="text" name="t1" id ="tt1"/>
-        <input type="checkbox" name="t2" id ="tt2"/>
-    </form>
+    <header>
+        <h1>Turtle Tracker</h1>
+        <p>Explore turtle movements with our interactive map below!</p>
+    </header>
+    <main>
+        <h2>Interactive Turtle Movement Map</h2>
+        <div class="map-container">
+            {% include "generated_map.html" %}
+        </div>
+    </main>
 {% endblock %}

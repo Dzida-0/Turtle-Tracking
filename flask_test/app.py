@@ -5,7 +5,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired, Length, Email
-
+import folium
 # app setup
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your_secret_key'
@@ -36,8 +36,32 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Login')
 
 
+def create_interactive_map():
+    # Sample coordinates for turtle movements
+    points = [
+        {"lat": 34.0522, "lon": -118.2437, "popup": "Los Angeles"},
+        {"lat": 36.7783, "lon": -119.4179, "popup": "California"},
+        {"lat": 40.7128, "lon": -74.0060, "popup": "New York"}
+    ]
+
+    # Create a map centered at the first point
+    m = folium.Map(location=[points[0]['lat'], points[0]['lon']], zoom_start=5, width='100%', height='400px')
+
+    # Add points to the map
+    for point in points:
+        folium.Marker(
+            location=[point['lat'], point['lon']],
+            popup=point['popup']
+        ).add_to(m)
+
+    # Save map as HTML file
+    map_path = "templates/generated_map.html"
+    m.save(map_path)
+    return map_path
+
 @app.route('/')
 def index():
+    map_path = create_interactive_map()
     return render_template('index.html')
 
 
