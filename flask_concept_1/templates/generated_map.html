@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    
+        <script>
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        </script>
+    
+    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_a0a50f81e7dcbaaa54839fddd4b4cd95 {
+                    position: relative;
+                    width: 50.0%;
+                    height: 400.0px;
+                    left: 10.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+        
+</head>
+<body>
+    
+    
+            <div class="folium-map" id="map_a0a50f81e7dcbaaa54839fddd4b4cd95" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_a0a50f81e7dcbaaa54839fddd4b4cd95 = L.map(
+                "map_a0a50f81e7dcbaaa54839fddd4b4cd95",
+                {
+                    center: [34.0522, -118.2437],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "maxBounds": null,
+  "zoom": 5,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_c69dfac8820e731c06b318f92f6b89c3 = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+  "minZoom": 3,
+  "maxZoom": 100,
+  "maxNativeZoom": 100,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_c69dfac8820e731c06b318f92f6b89c3.addTo(map_a0a50f81e7dcbaaa54839fddd4b4cd95);
+        
+    
+            var marker_f6bbf6b1fcc3111f84c007be3d082996 = L.marker(
+                [34.0522, -118.2437],
+                {
+  "draggable": null,
+  "autoPan": null,
+}
+            ).addTo(map_a0a50f81e7dcbaaa54839fddd4b4cd95);
+        
+    
+        var popup_3e5571a603e5102cacb81a90a8c7efec = L.popup({
+  "maxWidth": "100%",
+  "autoClose": null,
+  "closeOnClick": null,
+});
+
+        
+            
+                var html_78ee3448fdb507479bdd5451157cfd67 = $(`<div id="html_78ee3448fdb507479bdd5451157cfd67" style="width: 100.0%; height: 100.0%;">Los Angeles</div>`)[0];
+                popup_3e5571a603e5102cacb81a90a8c7efec.setContent(html_78ee3448fdb507479bdd5451157cfd67);
+            
+        
+
+        marker_f6bbf6b1fcc3111f84c007be3d082996.bindPopup(popup_3e5571a603e5102cacb81a90a8c7efec)
+        ;
+
+        
+    
+    
+            var marker_19fd4af8154d58556074c32f4481d117 = L.marker(
+                [36.7783, -119.4179],
+                {
+  "draggable": null,
+  "autoPan": null,
+}
+            ).addTo(map_a0a50f81e7dcbaaa54839fddd4b4cd95);
+        
+    
+        var popup_dcc6279ae448976539c6aeccf3d85ca3 = L.popup({
+  "maxWidth": "100%",
+  "autoClose": null,
+  "closeOnClick": null,
+});
+
+        
+            
+                var html_8c100c88d49d783efad997c4f58ad1f4 = $(`<div id="html_8c100c88d49d783efad997c4f58ad1f4" style="width: 100.0%; height: 100.0%;">California</div>`)[0];
+                popup_dcc6279ae448976539c6aeccf3d85ca3.setContent(html_8c100c88d49d783efad997c4f58ad1f4);
+            
+        
+
+        marker_19fd4af8154d58556074c32f4481d117.bindPopup(popup_dcc6279ae448976539c6aeccf3d85ca3)
+        ;
+
+        
+    
+    
+            var marker_4326161d7a458238b1cfaf4da2e57f39 = L.marker(
+                [40.7128, -74.006],
+                {
+  "draggable": null,
+  "autoPan": null,
+}
+            ).addTo(map_a0a50f81e7dcbaaa54839fddd4b4cd95);
+        
+    
+        var popup_192dee0d8bdd2d2b4869e806e4ffa154 = L.popup({
+  "maxWidth": "100%",
+  "autoClose": null,
+  "closeOnClick": null,
+});
+
+        
+            
+                var html_60abc3ebf9b5991d88302d66a9b21406 = $(`<div id="html_60abc3ebf9b5991d88302d66a9b21406" style="width: 100.0%; height: 100.0%;">New York</div>`)[0];
+                popup_192dee0d8bdd2d2b4869e806e4ffa154.setContent(html_60abc3ebf9b5991d88302d66a9b21406);
+            
+        
+
+        marker_4326161d7a458238b1cfaf4da2e57f39.bindPopup(popup_192dee0d8bdd2d2b4869e806e4ffa154)
+        ;
+
+        
+    
+    
+            var poly_line_8eda5666ec131790479d64d67d6c4f92 = L.polyline(
+                [[34.0522, -118.2437], [36.7783, -119.4179], [40.7128, -74.006]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 2.5}
+            ).addTo(map_a0a50f81e7dcbaaa54839fddd4b4cd95);
+        
+</script>
+</html>
