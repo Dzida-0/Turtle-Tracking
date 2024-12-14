@@ -1,10 +1,8 @@
 import json
 import logging
-import os
-from typing import Optional, Dict, List, Tuple
+from typing import Tuple
 
-from time import sleep
-
+from ..
 
 # TO DO
 # adult kid
@@ -118,14 +116,49 @@ def parse_turtle_info() -> None:
                     project_name = attribute.get("value", "")
                 elif attribute.get("code", "") == "Biography":
                     biography = attribute.get("value", "")
-            tab.append([id,name,last_position,active_turtle,turtle_sex, turtle_age, length, length_type,
-                        width, width_type,project_name,biography,description])
 
-        columns = ["id","name","last_position","active_turtle","turtle_sex", "turtle_age", "length", "length_type",
-                        "width", "width_type","project_name","biography","description"]
-        os.makedirs("../../data/parsed", exist_ok=True)
-        with open("../../data/parsed/turtles_info.json", "w") as f:
-            json.dump([dict(zip(columns, row)) for row in tab],f)
+                    # Check if the turtle exists in the database
+                existing_turtle = Turtle.query.get(turtle_id)
+                if existing_turtle:
+                    # Update existing record
+                    existing_turtle.name = name
+                    existing_turtle.last_position = last_position
+                    existing_turtle.is_active = is_active
+                    existing_turtle.turtle_sex = turtle_sex
+                    existing_turtle.turtle_age = turtle_age
+                    existing_turtle.length = length
+                    existing_turtle.length_type = length_type
+                    existing_turtle.width = width
+                    existing_turtle.width_type = width_type
+                    existing_turtle.project_name = project_name
+                    existing_turtle.biography = biography
+                    existing_turtle.description = description
+                else:
+                    # Create a new record
+                    new_turtle = Turtle(
+                        id=turtle_id,
+                        name=name,
+                        last_position=last_position,
+                        is_active=is_active,
+                        turtle_sex=turtle_sex,
+                        turtle_age=turtle_age,
+                        length=length,
+                        length_type=length_type,
+                        width=width,
+                        width_type=width_type,
+                        project_name=project_name,
+                        biography=biography,
+                        description=description,
+                    )
+                    db.session.add(new_turtle)
+
+            # Commit changes to the database
+        try:
+            db.session.commit()
+            logging.info("Turtles data parsed and saved successfully.")
+        except Exception as e:
+            db.session.rollback()
+            logging.error(f"Error saving turtles to database: {e}")
 
     except FileNotFoundError:
         pass

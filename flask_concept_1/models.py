@@ -6,3 +6,11 @@ class User(db.Model):
     username = db.Column(db.String(80), nullable=False, unique=True)
     email = db.Column(db.String(120), nullable=False, unique=True)
     password = db.Column(db.String(200), nullable=False)
+
+
+class Turtle(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+
+
+class TurtlePosition(db.Model):
+    id = db.Column(db.Integer)
