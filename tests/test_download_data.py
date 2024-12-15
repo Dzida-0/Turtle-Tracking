@@ -1,8 +1,7 @@
 import unittest
 from unittest.mock import patch
-import os
 import requests
-from src.data_gathering.download_data import check_connection
+from data.download_data import check_connection
 
 
 class TestDownloadData(unittest.TestCase):

@@ -1,12 +1,48 @@
 {% extends 'base.html' %}
 
 {% block head %}
-    <title>"Hello"</title>
+    <title>"Turtles"</title>
 {% endblock %}
 
 {% block body %}
-    <form>
-        <input type="text" name="t1" id ="tt1"/>
-        <input type="checkbox" name="t2" id ="tt2"/>
-    </form>
+    <h1>All Turtles</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Last Position</th>
+                <th>Active</th>
+                <th>Sex</th>
+                <th>Age</th>
+                <th>Length (cm)</th>
+                <th>Length Type</th>
+                <th>Width (cm)</th>
+                <th>Width Type</th>
+                <th>Project Name</th>
+                <th>Biography</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for turtle in turtles %}
+            <tr>
+                <td>{{ turtle.id }}</td>
+                <td>{{ turtle.name }}</td>
+                <td>{{ turtle.last_position }}</td>
+                <td>{{ 'Yes' if turtle.is_active else 'No' }}</td>
+                <td>{{ turtle.turtle_sex }}</td>
+                <td>{{ turtle.turtle_age }}</td>
+                <td>{{ turtle.length }}</td>
+                <td>{{ turtle.length_type }}</td>
+                <td>{{ turtle.width }}</td>
+                <td>{{ turtle.width_type }}</td>
+                <td>{{ turtle.project_name }}</td>
+                <td>{{ turtle.biography }}</td>
+                <td>{{ turtle.description }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}

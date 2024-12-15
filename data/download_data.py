@@ -40,8 +40,8 @@ def download_turtles_info() -> Dict[bool, str]:
         response = requests.get(url, timeout=5)
         response.raise_for_status()
         data = response.json()
-        os.makedirs("../data/raw", exist_ok=True)
-        with open("../data/raw/turtles_info.json", "w") as f:
+        os.makedirs("data/raw", exist_ok=True)
+        with open("data/raw/turtles_info.json", "w") as f:
             json.dump(data, f)
         return {True: ""}
 
@@ -75,8 +75,8 @@ def download_turtles_positions(turtle_id: int, positions_quantity: Optional[int]
         response = requests.get(url, timeout=5)
         response.raise_for_status()
         data = response.json()
-        os.makedirs("../data/raw", exist_ok=True)
-        with open(f"../data/raw/turtles{turtle_id}_positions_.json", "w") as f:
+        os.makedirs("data/raw", exist_ok=True)
+        with open(f"data/raw/turtles{turtle_id}_positions_.json", "w") as f:
             json.dump(data, f)
         return {True: ""}
 

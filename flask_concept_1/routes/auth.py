@@ -10,10 +10,6 @@ from ..forms import RegistrationForm, LoginForm
 auth_bp = Blueprint('auth', __name__)
 
 
-@auth_bp.route('/login')
-def index():
-    return render_template('index.html')
-
 
 @auth_bp.route('/register', methods=['GET', 'POST'])
 def register():
@@ -36,7 +32,7 @@ def register():
         db.session.add(new_user)
         db.session.commit()
         flash('Registration successful! You can now log in.', 'success')
-        return redirect(url_for('login'))
+        return redirect(url_for('auth.login'))
     return render_template('register.html', form=form)
 
 

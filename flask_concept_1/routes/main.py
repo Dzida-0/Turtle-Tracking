@@ -37,7 +37,7 @@ def create_interactive_map():
     os.makedirs(templates_path, exist_ok=True)  # Ensure the directory exists
 
     # Save map as HTML file in templates folder
-    map_path = os.path.join(templates_path, 'generated_map.html')
+    map_path = os.path.join(templates_path, 'maps/generated_map.html')
     m.save(map_path)
     return map_path
 
@@ -105,7 +105,7 @@ def create_animated_path():
     templates_path = os.path.join(current_app.root_path, "templates")
     os.makedirs(templates_path, exist_ok=True)  # Ensure the directory exists
 
-    map_path = os.path.join(templates_path, "animated_map.html")
+    map_path = os.path.join(templates_path, "maps/animated_map.html")
     m.save(map_path)
     return map_path
 
@@ -118,7 +118,3 @@ def index():
 def i2():
     map_path = create_animated_path()
     return render_template('i2.html')
-
-@main_bp.route('/turtles')
-def turtles():
-    return render_template('turtles.html')

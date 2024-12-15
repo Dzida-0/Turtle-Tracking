@@ -1,5 +1,5 @@
 import unittest
-from src.data_gathering.data_parsing import remove_HTML_elements
+from data.data_parsing import remove_HTML_elements
 
 class TestDataParsing(unittest.TestCase):
     # Test for remove_HTML_element function

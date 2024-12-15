@@ -1,11 +1,11 @@
 import json
 import logging
 from typing import Tuple
+import re
 
-from ..
+from flask_concept_1.models import Turtle, TurtlePosition
+from flask_concept_1.extensions import db
 
-# TO DO
-# adult kid
 
 def remove_HTML_elements(text: str) -> str:
     """
@@ -26,7 +26,7 @@ def remove_HTML_elements(text: str) -> str:
             new_text += text[stop + 1:]
             text = new_text
             h = True
-    return text
+    return re.sub(r'\s+', ' ', text)
 
 
 def parse_description(description: str) -> Tuple:
@@ -71,7 +71,6 @@ def parse_description(description: str) -> Tuple:
                     length_type = "curved"
                 elif "straight" in d[e:e + f]:
                     length_type = "straight"
-                print(length, length_type, "length")
         elif "width" in dd:
             f = dd.index("width")
             if f <= 5:
@@ -80,7 +79,6 @@ def parse_description(description: str) -> Tuple:
                     width_type = "curved"
                 elif any(substr in d[e:e + f] for substr in ["straight", "SCL"]):
                     width_type = "straight"
-                print(width, width_type, "width")
         d.remove(d[e])
 
     return turtle_sex, turtle_age, length, length_type, width, width_type
@@ -88,14 +86,14 @@ def parse_description(description: str) -> Tuple:
 
 def parse_turtle_info() -> None:
     try:
-        with open("../../data/raw/turtles_info.json", "r") as f:
+        with open("data/raw/turtles_info.json", "r") as f:
             data = json.load(f)
-        tab = []
         for turtle in data:
-            id = turtle.get("id", "")
+            turtle_id = turtle.get("id", "")
             name = turtle.get("name", "")
             last_position = turtle.get("point", "").get("coordinates", "")
-            active_turtle = None
+            last_position  = ','.join(map(str, [last_position[0], last_position[1]]))
+            is_active = None
             turtle_sex = None
             turtle_age = None
             length = None
@@ -107,7 +105,7 @@ def parse_turtle_info() -> None:
             description = None
             for attribute in turtle.get("attributes", []):
                 if attribute.get("code", "") == "is_active":
-                    active_turtle = attribute.get("value", "")
+                    is_active = attribute.get("value", "")
                 elif attribute.get("code", "") == "Description":
                     description = attribute.get("value", "")
                     if description is not None:
@@ -117,10 +115,9 @@ def parse_turtle_info() -> None:
                 elif attribute.get("code", "") == "Biography":
                     biography = attribute.get("value", "")
 
-                    # Check if the turtle exists in the database
                 existing_turtle = Turtle.query.get(turtle_id)
                 if existing_turtle:
-                    # Update existing record
+
                     existing_turtle.name = name
                     existing_turtle.last_position = last_position
                     existing_turtle.is_active = is_active
@@ -134,7 +131,7 @@ def parse_turtle_info() -> None:
                     existing_turtle.biography = biography
                     existing_turtle.description = description
                 else:
-                    # Create a new record
+
                     new_turtle = Turtle(
                         id=turtle_id,
                         name=name,
@@ -152,7 +149,6 @@ def parse_turtle_info() -> None:
                     )
                     db.session.add(new_turtle)
 
-            # Commit changes to the database
         try:
             db.session.commit()
             logging.info("Turtles data parsed and saved successfully.")
@@ -162,7 +158,3 @@ def parse_turtle_info() -> None:
 
     except FileNotFoundError:
         pass
-
-
-if __name__ == '__main__':
-    parse_turtle_info()
