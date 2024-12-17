@@ -76,7 +76,7 @@ def download_turtles_positions(turtle_id: int, positions_quantity: Optional[int]
         response.raise_for_status()
         data = response.json()
         os.makedirs("data/raw", exist_ok=True)
-        with open(f"data/raw/turtles{turtle_id}_positions_.json", "w") as f:
+        with open(f"data/raw/turtles{turtle_id}_positions.json", "w") as f:
             json.dump(data, f)
         return {True: ""}
 

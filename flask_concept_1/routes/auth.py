@@ -49,7 +49,7 @@ def login():
         if user and check_password_hash(user.password, form.password.data):
             login_user(user)
             flash('Login successful!', 'success')
-            return redirect(url_for('index'))
+            return redirect(url_for('main.index'))
         flash('Invalid credentials.', 'danger')
     return render_template('login.html', form=form)
 
@@ -59,4 +59,4 @@ def login():
 def logout():
     logout_user()
     flash('You have been logged out.', 'info')
-    return redirect(url_for('index'))
+    return redirect(url_for('main.index'))

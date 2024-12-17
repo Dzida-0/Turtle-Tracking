@@ -6,23 +6,12 @@
 
 {% block body %}
     <h1>All Turtles</h1>
-
     <table>
         <thead>
             <tr>
                 <th>ID</th>
                 <th>Name</th>
-                <th>Last Position</th>
-                <th>Active</th>
-                <th>Sex</th>
-                <th>Age</th>
-                <th>Length (cm)</th>
-                <th>Length Type</th>
-                <th>Width (cm)</th>
-                <th>Width Type</th>
-                <th>Project Name</th>
-                <th>Biography</th>
-                <th>Description</th>
+                <th>Favorite</th>
             </tr>
         </thead>
         <tbody>
@@ -30,19 +19,45 @@
             <tr>
                 <td>{{ turtle.id }}</td>
                 <td>{{ turtle.name }}</td>
-                <td>{{ turtle.last_position }}</td>
-                <td>{{ 'Yes' if turtle.is_active else 'No' }}</td>
-                <td>{{ turtle.turtle_sex }}</td>
-                <td>{{ turtle.turtle_age }}</td>
-                <td>{{ turtle.length }}</td>
-                <td>{{ turtle.length_type }}</td>
-                <td>{{ turtle.width }}</td>
-                <td>{{ turtle.width_type }}</td>
-                <td>{{ turtle.project_name }}</td>
-                <td>{{ turtle.biography }}</td>
-                <td>{{ turtle.description }}</td>
+                <td>
+                    <label>
+                        <input
+                        type="checkbox"
+                        class="favorite-checkbox"
+                        data-turtle-id="{{ turtle.id }}"
+                        {% if turtle in favorites %} checked {% endif %}>
+                    </label>
+                </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
+
+    <script>
+    document.querySelectorAll('.favorite-checkbox').forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            const turtleId = this.dataset.turtleId;
+            const isFavorite = this.checked;
+
+            fetch('/update_favorite', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ turtle_id: turtleId, favorite: isFavorite })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (!data.success) {
+                    alert('Error updating favorite status!');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error updating favorite status!');
+            });
+        });
+    });
+    </script>
 {% endblock %}

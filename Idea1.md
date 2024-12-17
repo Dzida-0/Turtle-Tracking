@@ -20,12 +20,17 @@ algorithms and neural network.
 - grouping turtles by features
 ### Visualisation 
 #### page 1: Welcome page
-- buttons to oder pages
+- buttons to oder pages\
+if no favorite then 10 random
 - table with favorites turtles
+- map of favorite turtles
 - random statistic eg. turtle "xxx" move most distance
-- map of last movements
 #### page 2: All available turtles
 - list of all turtles 
+- image 
+- name 
+- description 
+- favorite button
 #### page 3: Single turtle page
 - all data about one turtle
 #### page 4: logging / register

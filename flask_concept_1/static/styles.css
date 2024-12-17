@@ -63,4 +63,51 @@ form button:hover {
   font-size: 1rem;
 }
 
+input.heart-checkbox {
+  display: none;
+}
+
+label {
+  position: relative;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background-color: #ccc;
+  margin: 10px;
+  transform: rotate(-45deg);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+label::before, label::after {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background-color: inherit;
+  border-radius: 50%;
+  transition: background-color 0.3s ease;
+}
+label::before {
+  top: -10px;
+  left: 0;
+}
+label::after {
+  top: 0;
+  left: 10px;
+}
+
+input.heart-checkbox:checked + label {
+  background-color: #e74c3c;
+}
+input.heart-checkbox:checked + label::before, input.heart-checkbox:checked + label::after {
+  background-color: #e74c3c;
+}
+
+label:hover {
+  background-color: #ff6b6b;
+}
+label:hover::before, label:hover::after {
+  background-color: #ff6b6b;
+}
+
 /*# sourceMappingURL=styles.css.map */

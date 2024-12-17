@@ -71,3 +71,64 @@ form {
     }
   }
 }
+
+
+// Hide the default checkbox
+input.heart-checkbox {
+    display: none;
+}
+
+// Heart shape styling
+label {
+    position: relative;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background-color: #ccc; // Default color (grey)
+    margin: 10px;
+    transform: rotate(-45deg); // Rotate to make heart shape
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    // Create top circles to make the heart
+    &::before,
+    &::after {
+        content: "";
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        background-color: inherit; // Same as the heart color
+        border-radius: 50%;
+        transition: background-color 0.3s ease;
+    }
+
+    &::before {
+        top: -10px;
+        left: 0;
+    }
+
+    &::after {
+        top: 0;
+        left: 10px;
+    }
+}
+
+// Checked state - heart becomes red and stays red
+input.heart-checkbox:checked + label {
+    background-color: #e74c3c; // Red color for the heart
+
+    &::before,
+    &::after {
+        background-color: #e74c3c; // Red for the top circles
+    }
+}
+
+// Hover effect - slightly lighter red when hovered
+label:hover {
+    background-color: #ff6b6b; // Lighter red when hovered
+
+    &::before,
+    &::after {
+        background-color: #ff6b6b;
+    }
+}
