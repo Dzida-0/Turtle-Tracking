@@ -22,6 +22,7 @@ def turtles():
 
     return render_template('turtles.html', turtles=all_turtles, favorites=favorites)
 
+
 @turtle_bp.route('/turtle/<int:turtle_id>')
 def turtle(turtle_id):
     turtle = Turtle.query.get(turtle_id)  # Fetching the turtle with the given id
@@ -66,9 +67,11 @@ def update_favorite():
 
     return jsonify({'success': True})
 
+
 @user_logged_out.connect_via(turtle_bp)
 def clear_session_favorites(sender, user):
     session.pop('favorites', None)
+
 
 @user_logged_in.connect_via(turtle_bp)
 def merge_favorites(sender, user):

@@ -1,10 +1,16 @@
 from flask import render_template, Blueprint,current_app
-
+import os
+from flask import current_app
+import folium
+from folium.plugins import TimestampedGeoJson
+from folium import Popup
+from branca.element import Template, MacroElement
 import folium
 from folium.plugins import TimestampedGeoJson
 import os
 
 main_bp = Blueprint('main', __name__)
+
 
 
 def create_interactive_map():
@@ -16,7 +22,7 @@ def create_interactive_map():
     ]
 
     # Create a map centered at the first point
-    m = folium.Map(location=[points[0]['lat'], points[0]['lon']], zoom_start=5,min_zoom=3,max_zoom=100, width='50%', height='400px',left = '10%')
+    m = folium.Map(location=[points[0]['lat'], points[0]['lon']], zoom_start=5, min_zoom=3, max_zoom=100)
 
     # Add points to the map
     for point in points:
@@ -25,6 +31,7 @@ def create_interactive_map():
             popup=point['popup']
         ).add_to(m)
 
+    # Add polyline
     folium.PolyLine(
         locations=[[point["lat"], point["lon"]] for point in points],
         color="blue",
@@ -32,78 +39,64 @@ def create_interactive_map():
         opacity=0.8
     ).add_to(m)
 
-    # Dynamically resolve the template directory and save map as HTML file
+    # Save map as HTML file in templates folder
     templates_path = os.path.join(current_app.root_path, 'templates')
     os.makedirs(templates_path, exist_ok=True)  # Ensure the directory exists
 
-    # Save map as HTML file in templates folder
     map_path = os.path.join(templates_path, 'maps/generated_map.html')
     m.save(map_path)
+
     return map_path
 
 def create_animated_path():
-    # Sample data for turtle movements with timestamps
     points = [
-        {"lat": 34.0522, "lon": -118.2437, "timestamp": "2023-12-01T08:00:00Z"},
-        {"lat": 35.0522, "lon": -118.1437, "timestamp": "2023-12-01T09:00:00Z"},
-        {"lat": 36.7783, "lon": -119.4179, "timestamp": "2023-12-01T10:00:00Z"},
-        {"lat": 37.7783, "lon": -120.4179, "timestamp": "2023-12-01T11:00:00Z"},
-        {"lat": 40.7128, "lon": -74.0060, "timestamp": "2023-12-01T12:00:00Z"},
+        [34.0522, -118.2437],
+        [35.0522, -118.1437],
+        [36.7783, -119.4179],
+        [37.7783, -120.4179],
+        [40.7128, -74.0060],
     ]
 
-    # Prepare GeoJSON structure with features
-    features = []
-    for point in points:
-        feature = {
-            "type": "Feature",
-            "geometry": {
-                "type": "Point",
-                "coordinates": [point["lon"], point["lat"]]
-            },
-            "properties": {
-                "time": point["timestamp"],
-                "popup": f"Location: ({point['lat']}, {point['lon']})",
-                "icon": "circle",
-                "iconstyle": {
-                    "fillColor": "blue",
-                    "fillOpacity": 0.6,
-                    "stroke": "true",
-                    "radius": 5
-                }
-            }
-        }
-        features.append(feature)
+    # Create map
+    m = folium.Map(location=points[0], zoom_start=6)
 
-    # Create Timestamped GeoJSON
-    geojson = {
-        "type": "FeatureCollection",
-        "features": features
+    # Add points
+    for point in points:
+        folium.CircleMarker(location=point, radius=5, color="blue", fill=True).add_to(m)
+
+    # Add polyline (path)
+    path = folium.PolyLine(points, color="blue", weight=3)
+    m.add_child(path)
+
+    # Add custom JavaScript for animation
+    js = """
+    var polyline = L.polyline(
+        {{ coordinates }},
+        {color: 'blue', weight: 3}
+    ).addTo(map);
+
+    var index = 1;
+    var interval = 500; // Animation speed in milliseconds
+
+    function drawSegment() {
+        if (index < polyline.getLatLngs().length) {
+            var segment = polyline.getLatLngs().slice(0, index + 1);
+            polyline.setLatLngs(segment);
+            index++;
+            setTimeout(drawSegment, interval);
+        }
     }
 
-    # Create the base map
-    m = folium.Map(
-        location=[points[0]["lat"], points[0]["lon"]],
-        zoom_start=5,
-        width="50%",
-        height="400px",
-        left="10%"
+    drawSegment();
+    """.replace(
+        "{{ coordinates }}", str(points)
     )
 
-    # Add animated path layer
-    TimestampedGeoJson(
-        geojson,
-        period="PT1H",  # Animation interval (1 hour per frame)
-        add_last_point=True,
-        auto_play=True,
-        loop=True,
-        max_speed=1,
-        loop_button=True,
-        date_options="YYYY-MM-DD HH:mm:ss"
-    ).add_to(m)
+    m.get_root().html.add_child(folium.Element(f"<script>{js}</script>"))
 
-    # Save map as HTML file in templates folder
+    # Save the map as an HTML file in the templates folder
     templates_path = os.path.join(current_app.root_path, "templates")
-    os.makedirs(templates_path, exist_ok=True)  # Ensure the directory exists
+    os.makedirs(templates_path, exist_ok=True)
 
     map_path = os.path.join(templates_path, "maps/animated_map.html")
     m.save(map_path)

@@ -5,62 +5,61 @@
 {% endblock %}
 
 {% block body %}
-    <h1>{{ turtle.name }}</h1>
+    <div class="turtle-container">
+        <!-- Left Section with Name -->
+          <div>
+            {% if true %}
+                <img src="{{ url_for('static', filename='turtle.jpg') }}" alt="Turtle Picture" class="turtle-picture">
+            {% else %}
+                <p>No picture available</p>
+            {% endif %}
+        </div>
+        <div class="turtle-info">
+            <h1>{{ turtle.name }}</h1>
+            <table>
+                <tr>
+                    <th>Active</th>
+                    <td>{{ 'Yes' if turtle.is_active else 'No' }}</td>
+                </tr>
+                <tr>
+                    <th>Sex</th>
+                    <td>{{ turtle.turtle_sex }}</td>
+                </tr>
+                <tr>
+                    <th>Age</th>
+                    <td>{{ turtle.turtle_age }}</td>
+                </tr>
+                <tr>
+                    <th>Length</th>
+                    <td>{{ turtle.length }} cm</td>
+                </tr>
+                <tr>
+                    <th>Length Type</th>
+                    <td>{{ turtle.length_type }}</td>
+                </tr>
+                <tr>
+                    <th>Width</th>
+                    <td>{{ turtle.width }} cm</td>
+                </tr>
+                <tr>
+                    <th>Width Type</th>
+                    <td>{{ turtle.width_type }}</td>
+                </tr>
+                <tr>
+                    <th>Project Name</th>
+                    <td>{{ turtle.project_name }}</td>
+                </tr>
 
-    <table>
-        <tr>
-            <th>ID</th>
-            <td>{{ turtle.id }}</td>
-        </tr>
-        <tr>
-            <th>Name</th>
-            <td>{{ turtle.name }}</td>
-        </tr>
-        <tr>
-            <th>Last Position</th>
-            <td>{{ turtle.last_position }}</td>
-        </tr>
-        <tr>
-            <th>Active</th>
-            <td>{{ 'Yes' if turtle.is_active else 'No' }}</td>
-        </tr>
-        <tr>
-            <th>Sex</th>
-            <td>{{ turtle.turtle_sex }}</td>
-        </tr>
-        <tr>
-            <th>Age</th>
-            <td>{{ turtle.turtle_age }}</td>
-        </tr>
-        <tr>
-            <th>Length</th>
-            <td>{{ turtle.length }} cm</td>
-        </tr>
-        <tr>
-            <th>Length Type</th>
-            <td>{{ turtle.length_type }}</td>
-        </tr>
-        <tr>
-            <th>Width</th>
-            <td>{{ turtle.width }} cm</td>
-        </tr>
-        <tr>
-            <th>Width Type</th>
-            <td>{{ turtle.width_type }}</td>
-        </tr>
-        <tr>
-            <th>Project Name</th>
-            <td>{{ turtle.project_name }}</td>
-        </tr>
-        <tr>
-            <th>Biography</th>
-            <td>{{ turtle.biography }}</td>
-        </tr>
-        <tr>
-            <th>Description</th>
-            <td>{{ turtle.description }}</td>
-        </tr>
-    </table>
+            </table>
+        </div>
 
+        <!-- Right Section with Picture -->
+
+    </div>
+
+    <!-- Map Section -->
+    <div class="map-container">
+        <iframe class="map-turtle" src="{{ url_for('static', filename='maps/generated_map.html') }}"></iframe>
+    </div>
 {% endblock %}
 

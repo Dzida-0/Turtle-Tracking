@@ -38,4 +38,6 @@ class TurtlePosition(db.Model):
     __tablename__ = 'turtle_pos'
     id = db.Column(db.Integer, primary_key=True)
     turtle_id = db.Column(db.Integer, nullable=False)
+    x = db.Column(db.Float, nullable=False)
+    y = db.Column(db.Float, nullable=False)
 

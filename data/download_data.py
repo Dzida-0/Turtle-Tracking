@@ -3,6 +3,9 @@ import logging
 import os
 from typing import Optional, Dict
 import requests
+from werkzeug.utils import secure_filename
+
+import config
 
 
 def check_connection() -> Dict[bool, str]:
@@ -92,3 +95,28 @@ def download_turtles_positions(turtle_id: int, positions_quantity: Optional[int]
     except ValueError:
         logging.error("Failed to decode JSON from response")
         return {False: "Failed to decode JSON from response"}
+
+
+def download_image(image_url: str) -> str:
+    """
+    Download an image from a URL and save it to the configured folder.
+
+    :param image_url: The URL of the image.
+    :return: The filename of the saved image, or an error message.
+    """
+    try:
+        response = requests.get(image_url, stream=True)
+        response.raise_for_status()  # Ensure the request was successful
+
+        # Extract filename from the URL
+        filename = secure_filename(image_url.split("/")[-1])
+        save_path = os.path.join(config.IMAGE_FOLDER, filename)
+
+        # Save the image
+        with open(save_path, "wb") as img_file:
+            for chunk in response.iter_content(chunk_size=8192):
+                img_file.write(chunk)
+
+        return filename  # Return the saved filename
+    except requests.exceptions.RequestException as e:
+        return f"Error downloading image: {e}"
