@@ -6,32 +6,28 @@
 
 {% block body %}
     <h1>All Turtles</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Favorite</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for turtle in turtles %}
-            <tr>
-                <td>{{ turtle.id }}</td>
-                <td>{{ turtle.name }}</td>
-                <td>
-                    <label>
-                        <input
-                        type="checkbox"
-                        class="favorite-checkbox"
-                        data-turtle-id="{{ turtle.id }}"
-                        {% if turtle in favorites %} checked {% endif %}>
-                    </label>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <button id="toggle-active" class="btn">Hide Inactive</button>
+        <div class="turtle-list">
+        {% for turtle in turtles %}
+         <a href="{{ url_for('turtle.turtle', turtle_id=turtle.id) }}"
+            class="turtle-item {% if not turtle.is_active %}inactive{% endif %}">
+            <img src="{{ url_for('static', filename="turtle.jpg") }}" alt="{{ turtle.name }}" class="turtle-picture">
+            <div class="turtle-info">
+                <h2>{{ turtle.name }}</h2>
+                <p>{{ turtle.description }}</p>
+                <label>
+                    <input
+                    type="checkbox"
+                    class="favorite-checkbox"
+                    data-turtle-id="{{ turtle.id }}"
+                    {% if turtle in favorites %} checked {% endif %}>
+                    Favorite
+                </label>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
 
     <script>
     document.querySelectorAll('.favorite-checkbox').forEach(checkbox => {
@@ -58,6 +54,15 @@
                 alert('Error updating favorite status!');
             });
         });
+    });
+
+    const toggleButton = document.getElementById('toggle-active');
+    toggleButton.addEventListener('click', function() {
+        document.querySelectorAll('.turtle-item.inactive').forEach(item => {
+            item.classList.toggle('hidden');
+        });
+        toggleButton.textContent =
+            toggleButton.textContent === 'Hide Inactive' ? 'Show Inactive' : 'Hide Inactive';
     });
     </script>
 {% endblock %}

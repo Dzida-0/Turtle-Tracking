@@ -12,42 +12,54 @@ import os
 main_bp = Blueprint('main', __name__)
 
 
+@main_bp.route('/create_map')
+def create_interactive_map(positions):
+    """
+    Generate an interactive map based on a list of TurtlePosition objects.
 
-def create_interactive_map():
-    # Sample coordinates for turtle movements
-    points = [
-        {"lat": 34.0522, "lon": -118.2437, "popup": "Los Angeles"},
-        {"lat": 36.7783, "lon": -119.4179, "popup": "California"},
-        {"lat": 40.7128, "lon": -74.0060, "popup": "New York"}
-    ]
+    Args:
+        positions (list): A list of TurtlePosition objects containing `x`, `y`, and `turtle_id`.
 
-    # Create a map centered at the first point
-    m = folium.Map(location=[points[0]['lat'], points[0]['lon']], zoom_start=5, min_zoom=3, max_zoom=100)
+    Returns:
+        str: The path to the generated HTML map.
+    """
 
-    # Add points to the map
-    for point in points:
+    # Ensure positions is not empty
+    if not positions:
+        raise ValueError("No positions provided to create the map.")
+
+    # Create a map centered at the first position
+    first_position = positions[0]
+    m = folium.Map(location=[first_position.x, first_position.y], zoom_start=5, min_zoom=3, max_zoom=100)
+
+    # Add markers and collect points for the polyline
+    polyline_points = []
+    for position in positions:
+        # Add each position as a marker
         folium.Marker(
-            location=[point['lat'], point['lon']],
-            popup=point['popup']
+            location=[position.x, position.y],
+            popup=f"Turtle ID: {position.turtle_id}"
         ).add_to(m)
 
-    # Add polyline
+        # Collect points for the polyline
+        polyline_points.append([position.x, position.y])
+
+    # Add polyline to connect all positions
     folium.PolyLine(
-        locations=[[point["lat"], point["lon"]] for point in points],
+        locations=polyline_points,
         color="blue",
         weight=2.5,
         opacity=0.8
     ).add_to(m)
 
     # Save map as HTML file in templates folder
-    templates_path = os.path.join(current_app.root_path, 'templates')
+    templates_path = os.path.join(current_app.root_path, 'templates/maps')
     os.makedirs(templates_path, exist_ok=True)  # Ensure the directory exists
 
-    map_path = os.path.join(templates_path, 'maps/generated_map.html')
+    map_path = os.path.join(templates_path, 'generated_map.html')
     m.save(map_path)
 
     return map_path
-
 def create_animated_path():
     points = [
         [34.0522, -118.2437],
@@ -104,10 +116,5 @@ def create_animated_path():
 
 @main_bp.route('/')
 def index():
-    map_path = create_interactive_map()
-    return render_template('index.html')
 
-@main_bp.route('/i2')
-def i2():
-    map_path = create_animated_path()
-    return render_template('i2.html')
+    return render_template('index.html')

@@ -1,14 +1,37 @@
+$background-color: #f7f7f7;
+
 body{
-  background-color:  #007bff;
+  background-color:  $background-color;
   width: auto;
-  height: 100%;
+  height: auto;
 }
+
+.turtle-animation {
+  position: absolute;
+  left: 400px;
+  width: 385px; /* Width of a single frame */
+  height: 185px; /* Height of a single frame */
+  background-image: url('turtle-sprite.png'); /* Path to your sprite sheet */
+  animation: turtleMove 1s steps(2) infinite; /* 10 frames in the sprite sheet */
+  background-repeat: no-repeat;
+  background-size: cover;
+  transition: transform 0.5s ease;
+}
+
+@keyframes turtleMove {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: -769px 0; /* Shift by the width of 10 frames */
+  }
+}
+
 
 /* register  */
 form {
   display: flex;
   flex-direction: column;
-  max-width: 400px;
   margin: 0 auto;
 
   p {
@@ -84,18 +107,76 @@ form {
     margin-right: 20px;
         }
 .turtle-picture {
-    max-width: 200px;
-    max-height: 200px;
+    max-width: 50%;
+    max-height: 70%;
+
     border-radius: 10px;
     object-fit: cover;
+    margin: 10px;
         }
 .map-container {
     margin-top: 20px;
     width: 40%;
-    height: 40%;
+    height: 500px;
         }
 .map-turtle {
     width: 100%;
     height: 100%;
         }
 
+/* Turtle list*/
+.turtle-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.turtle-item {
+    display: flex;
+    align-items: center;
+    background-color: #f9f9f9;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    width: 90%;
+    transition: opacity 0.3s ease;
+}
+
+.turtle-item img.turtle-picture {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin-right: 15px;
+    object-fit: cover;
+    border: 2px solid #ccc;
+}
+
+.turtle-info h2 {
+    margin: 0 0 5px;
+    font-size: 1.2rem;
+}
+
+.turtle-info p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.turtle-item.hidden {
+    display: none;
+}
+
+.btn {
+    padding: 10px 15px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+}

@@ -13,12 +13,12 @@
                 <li><a href="{{ url_for('turtle.turtles') }}">Turtles</a></li>
 
                 {% if current_user.is_authenticated %}
-                    <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
                     <li><span>Welcome, {{ current_user.username }}</span></li>
+                    <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
                 {% else %}
+                     <li><span>Welcome, Guest</span></li>
                     <li><a href="{{ url_for('auth.login') }}">Login</a></li>
                     <li><a href="{{ url_for('auth.register') }}">Register</a></li>
-                    <li><span>Welcome, Guest</span></li>
                 {% endif %}
             </ul>
         </nav>
@@ -32,5 +32,7 @@
             {% endif %}
         {% endwith %}
         {% block body %} {% endblock %}
+
     </body>
+
     </html>

@@ -1,0 +1,18 @@
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const turtle = document.querySelector(".turtle-animation");
+    let currentPosition = 0; // Initial position
+
+    setInterval(() => {
+      currentPosition += 70; // Move turtle by 20px
+      turtle.style.transform = `translateX(${currentPosition}px)`; // Update position
+
+      // Reset position if the turtle moves off-screen
+      if (currentPosition > window.innerWidth) {
+        currentPosition = -100; // Reset to just off-screen on the left
+      }
+    }, 1000); // Move every 2 seconds
+  });
+</script>
+
+<div class="turtle-animation"></div>

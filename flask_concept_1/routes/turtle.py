@@ -1,8 +1,9 @@
 from flask import render_template, Blueprint, abort, request, jsonify, session
 from flask_login import current_user, user_logged_out, user_logged_in
 
+from .main import create_interactive_map
 from ..extensions import db
-from flask_concept_1.models import Turtle
+from flask_concept_1.models import Turtle, TurtlePosition
 
 turtle_bp = Blueprint('turtle', __name__)
 
@@ -23,12 +24,23 @@ def turtles():
     return render_template('turtles.html', turtles=all_turtles, favorites=favorites)
 
 
+@turtle_bp.route('/generated_map<int:turtle_id>')
+def generated_map(turtle_id):
+    positions = TurtlePosition.query.filter_by(turtle_id=turtle_id).all()
+    map_path = create_interactive_map(positions)
+    if not positions:
+        return "No positions available for this turtle.", 404
+    return render_template('maps/generated_map.html')
+
+
 @turtle_bp.route('/turtle/<int:turtle_id>')
 def turtle(turtle_id):
-    turtle = Turtle.query.get(turtle_id)  # Fetching the turtle with the given id
+    turtle = Turtle.query.get(turtle_id)
+    positions = TurtlePosition.query.get(turtle_id)
+    # Fetching the turtle with the given id
     if not turtle:
         abort(404)
-    return render_template('turtle.html', turtle=turtle)
+    return render_template('turtle.html', turtle=turtle, positions =positions)
 
 
 @turtle_bp.route('/update_favorite', methods=['POST'])
