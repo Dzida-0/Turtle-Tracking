@@ -10,7 +10,6 @@ login_manager = LoginManager()
 login_manager.login_view = 'auth.login'
 
 
-
 class Guest(AnonymousUserMixin):
     def can(self, permission_name):
         return False

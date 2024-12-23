@@ -2,12 +2,13 @@ from flask_login import UserMixin
 from sqlalchemy.orm import relationship
 from flask_concept_1.extensions import db
 
-
 user_favorites = db.Table(
     'user_favorites',
     db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
     db.Column('turtle_id', db.Integer, db.ForeignKey('turtle.id'), primary_key=True)
 )
+
+
 class User(db.Model, UserMixin):
     __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)
@@ -40,4 +41,3 @@ class TurtlePosition(db.Model):
     turtle_id = db.Column(db.Integer, nullable=False)
     x = db.Column(db.Float, nullable=False)
     y = db.Column(db.Float, nullable=False)
-

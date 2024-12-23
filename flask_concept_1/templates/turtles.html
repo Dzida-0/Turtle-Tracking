@@ -9,11 +9,13 @@
     <button id="toggle-active" class="btn">Hide Inactive</button>
         <div class="turtle-list">
         {% for turtle in turtles %}
-         <a href="{{ url_for('turtle.turtle', turtle_id=turtle.id) }}"
-            class="turtle-item {% if not turtle.is_active %}inactive{% endif %}">
+
+            <div class="turtle-item {% if not turtle.is_active %}inactive{% endif %}">
             <img src="{{ url_for('static', filename="turtle.jpg") }}" alt="{{ turtle.name }}" class="turtle-picture">
             <div class="turtle-info">
+            <a href="{{ url_for('turtle.turtle', turtle_id=turtle.id) }}">
                 <h2>{{ turtle.name }}</h2>
+            </a>
                 <p>{{ turtle.description }}</p>
                 <label>
                     <input

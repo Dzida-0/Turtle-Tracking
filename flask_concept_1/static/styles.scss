@@ -97,7 +97,12 @@ form {
   }
 }
 /* Turtle page */
-.turtle-container {
+.turtle-top-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+        }
+.turtle-bottom-container {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;

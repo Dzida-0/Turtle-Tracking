@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block body %}
-    <div class="turtle-container">
+    <div class="turtle-top-container">
         <!-- Left Section with Name -->
           <div class = "turtle-picture">
             {% if true %}
@@ -58,8 +58,15 @@
     </div>
 
     <!-- Map Section -->
+    <div class="turtle-bottom-container">
     <div class="map-container">
         <iframe class="map-turtle" src="{{ url_for('turtle.generated_map',turtle_id=turtle.id) }}"></iframe>
+    </div>
+
+    <div class="turtle-description">
+            <h2>Description</h2>
+            <p>{{ turtle.description }}</p>
+    </div>
     </div>
 {% endblock %}
 
