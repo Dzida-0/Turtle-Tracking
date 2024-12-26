@@ -13,18 +13,20 @@
             <div class="turtle-item {% if not turtle.is_active %}inactive{% endif %}">
             <img src="{{ url_for('static', filename="turtle.jpg") }}" alt="{{ turtle.name }}" class="turtle-picture">
             <div class="turtle-info">
-            <a href="{{ url_for('turtle.turtle', turtle_id=turtle.id) }}">
-                <h2>{{ turtle.name }}</h2>
-            </a>
+                <div class = "turtle-name">
+                    <a href="{{ url_for('turtle.turtle', turtle_id=turtle.id) }}">
+                        <h2>{{ turtle.name }}</h2>
+                    </a>
+                    <label class="favorite-label">
+                        <input
+                        type="checkbox"
+                        class="favorite-checkbox"
+                        data-turtle-id="{{ turtle.id }}"
+                        {% if turtle in favorites %} checked {% endif %}>
+                        <span class="favorite-icon"></span>
+                    </label>
+                </div>
                 <p>{{ turtle.description }}</p>
-                <label>
-                    <input
-                    type="checkbox"
-                    class="favorite-checkbox"
-                    data-turtle-id="{{ turtle.id }}"
-                    {% if turtle in favorites %} checked {% endif %}>
-                    Favorite
-                </label>
             </div>
         </div>
         {% endfor %}
