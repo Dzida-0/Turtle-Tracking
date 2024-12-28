@@ -1,7 +1,8 @@
+/* Color */
 /* Top bar */
 /* Turtle list*/
 body {
-  background-color: #efd8a9;
+  background-color: #FBF6E9;
   width: auto;
   height: auto;
   margin: 0;
@@ -9,32 +10,61 @@ body {
 
 /* Top bar */
 .navbar {
-  background-color: #68aef3;
-  padding: 10px;
+  background-color: rgba(136, 220, 239, 0.78);
   /* Vertical layout */
   /* Menu */
   /* Welcome text */
+  /* Favorites menu */
 }
 .navbar ul {
+  padding: 0;
+  margin: 0;
   list-style: none;
   display: flex;
   justify-content: space-around;
-  margin: 0;
-  padding: 0;
+}
+.navbar li {
+  padding: 10px 30px 10px 20px;
+}
+.navbar li:hover {
+  background-color: rgba(91.0444444444, 206.7777777778, 232.9555555556, 0.78);
 }
 .navbar li a {
-  color: #4600be;
+  color: #0019be;
   text-decoration: none;
   font-size: 1.2rem;
-  background-color: rgb(56.754601227, 148.6564417178, 239.245398773);
 }
 .navbar li a:hover {
   text-decoration: underline;
-  background-color: rgb(18.036809816, 123.2515337423, 226.963190184);
 }
 .navbar span {
-  color: #4600be;
+  color: #0019be;
   font-size: 1.2rem;
+}
+.navbar .dropdown-menu {
+  display: none; /* Hide by default */
+  position: absolute;
+  top: 5px; /* Position below the parent */
+  left: 5px;
+  background-color: #444;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-radius: 5px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+.navbar .dropdown-menu a {
+  color: white;
+  padding: 10px 20px;
+  display: block;
+  white-space: nowrap;
+}
+.navbar .turtle-list-nav:hover + .dropdown-menu {
+  display: block; /* Show on hover */
+}
+.navbar .dropdown-menu:hover {
+  display: block;
 }
 
 /* Turtle list*/
@@ -92,6 +122,61 @@ body {
 }
 .turtle-list .favorite-label .favorite-checkbox:checked + .favorite-icon {
   background-image: url("heart_red.png");
+}
+
+/* Turtle page */
+.turtle-top-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.turtle-bottom-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.turtle-info {
+  background-color: #f9f9f9;
+  flex: 1;
+  margin-right: 20px;
+}
+
+.turtle-picture {
+  max-width: 50%;
+  max-height: 70%;
+  border-radius: 10px;
+  object-fit: cover;
+  margin: 10px;
+}
+
+.turtle-picture-box {
+  object-fit: cover;
+  margin: 10px;
+}
+
+.map-container {
+  margin: 20px;
+  width: 800px;
+  height: 800px;
+}
+.map-container .map-turtle {
+  width: 100%;
+  height: 100%;
+}
+
+.turtle-description {
+  margin: 20px;
+  padding: 20px;
+}
+
+.turtle-description h2 {
+  width: 400px;
+}
+
+.turtle-description p {
+  width: 400px;
 }
 
 /*# sourceMappingURL=styles.css.map */

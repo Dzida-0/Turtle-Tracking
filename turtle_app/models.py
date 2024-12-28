@@ -1,6 +1,6 @@
 from flask_login import UserMixin
 from sqlalchemy.orm import relationship
-from flask_concept_1.extensions import db
+from turtle_app.extensions import db
 
 user_favorites = db.Table(
     'user_favorites',

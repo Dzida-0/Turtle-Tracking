@@ -3,7 +3,7 @@ from flask_login import current_user, user_logged_out, user_logged_in
 
 from .main import create_interactive_map
 from ..extensions import db
-from flask_concept_1.models import Turtle, TurtlePosition
+from turtle_app.models import Turtle, TurtlePosition
 
 turtle_bp = Blueprint('turtle', __name__)
 

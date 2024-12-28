@@ -10,7 +10,15 @@
         <nav class="navbar">
             <ul>
                 <li><a href="{{ url_for('main.index') }}">Home</a></li>
-                <li><a href="{{ url_for('turtle.turtles') }}">Turtles</a></li>
+                <li><a class = "turtle-list-nav" href="{{ url_for('turtle.turtles') }}">Turtles</a>
+                     <ul class="dropdown-menu">
+                        {% for turtle in favorites %}
+                            <li><a href="{{ url_for('turtle.turtle', turtle_id=turtle.id) }}">{{ turtle.name }}</a></li>
+                        {% else %}
+                            <li><span>No favorites yet</span></li>
+                        {% endfor %}
+                    </ul>
+                </li>
 
                 {% if current_user.is_authenticated %}
                     <li><span>Welcome, {{ current_user.username }}</span></li>
@@ -20,6 +28,7 @@
                     <li><a href="{{ url_for('auth.login') }}">Login</a></li>
                     <li><a href="{{ url_for('auth.register') }}">Register</a></li>
                 {% endif %}
+
             </ul>
         </nav>
         {% with messages = get_flashed_messages(with_categories=true) %}
@@ -32,6 +41,7 @@
             {% endif %}
         {% endwith %}
         {% block body %} {% endblock %}
+
 
     </body>
 

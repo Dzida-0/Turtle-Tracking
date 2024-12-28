@@ -3,8 +3,8 @@ import logging
 from typing import Tuple
 import re
 
-from flask_concept_1.models import Turtle, TurtlePosition
-from flask_concept_1.extensions import db
+from turtle_app.models import Turtle, TurtlePosition
+from turtle_app.extensions import db
 
 
 def remove_HTML_elements(text: str) -> str:
@@ -185,3 +185,5 @@ def parse_turtle_positions(turtle_id) -> None:
 
     except FileNotFoundError:
         pass
+
+
