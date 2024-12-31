@@ -1,3 +1,4 @@
+import logging
 import os
 from flask import Flask
 from config import config
@@ -11,24 +12,23 @@ from data.data_parsing import parse_turtle_info, parse_turtle_positions
 from .errors import create_error_handlers
 
 
-def create_app(config_name=None):
-    if config_name is None:
-        config_name = os.getenv('FLASK_CONFIG', 'development')
-    ###
-    app = Flask(__name__)
-    app.config.from_object(config[config_name])
-    db.init_app(app)
-    login_manager.init_app(app)
-    csrf.init_app(app)
+def create_app():
+    application = Flask(__name__)
+    logging.warning("1")
+    application.config.from_object(config[os.getenv('FLASK_CONFIG', 'development')])
+    db.init_app(application)
+    login_manager.init_app(application)
+    csrf.init_app(application)
 
     # Blueprints
-    app.register_blueprint(main_bp)
-    app.register_blueprint(auth_bp)
-    app.register_blueprint(turtle_bp)
+    application.register_blueprint(main_bp)
+    application.register_blueprint(auth_bp)
+    application.register_blueprint(turtle_bp)
 
-    create_error_handlers(app)
-
-    with app.app_context():
+    create_error_handlers(application)
+    logging.info("2")
+    with application.app_context():
+        logging.info("3")
         db.create_all()
         # download_turtles_info()
         # parse_turtle_info()
@@ -36,5 +36,4 @@ def create_app(config_name=None):
         # for turtle in turtles:
         # parse_turtle_positions(turtle.id)
         # download_turtles_positions(turtle.id)
-
-    return app
+    return application

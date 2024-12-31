@@ -47,3 +47,11 @@ if no favorite then 10 random
 - Ships movement impact
 - betting on turtles
 - deployment 
+
+psycopg2-binary
+gunicorn==20.1.0
+pytest==7.1.2
+black==22.3.0
+Flask==2.1.3
+Werkzeug==2.3.7
+
