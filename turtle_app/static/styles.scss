@@ -1,13 +1,21 @@
+$primary-color: #3498db;
+$secondary-color: #2ecc71;
+$background-color: #ecf0f1;
+$text-color: #2c3e50;
 
-
-
+:root {
+  --primary-color: #{$primary-color};
+  --secondary-color: #{$secondary-color};
+  --background-color: #{$background-color};
+  --text-color: #{$text-color};
+}
 
 
 /* Color */
-$background-color: #FBF6E9;
+/*$background-color: #FBF6E9;*/
 /* Top bar */
-$top-bar-color: rgba(136, 220, 239, 0.78);
-$top-bar-text-color: #0019be;
+/*$top-bar-color: rgba(136, 220, 239, 0.78);*/
+/*$top-bar-text-color: #0019be;*/
 $top-bar-text-size: 1.2rem;
 /* Turtle list*/
 $list-margin: 20px;
@@ -18,7 +26,7 @@ $turtle-box-inside-padding: 10px;
 
 
 body {
-  background-color: $background-color;
+  background-color: var(--background-color);
   width: auto;
   height: auto;
   margin: 0;
@@ -26,7 +34,7 @@ body {
 
 /* Top bar */
 .navbar {
-  background-color: $top-bar-color;
+  background-color: var(--primary-color);
 
   /* Vertical layout */
   ul {
@@ -42,10 +50,10 @@ body {
     padding: 10px 30px 10px 20px;
 
     &:hover {
-        background-color: darken($top-bar-color,10%);
+        background-color: darken(var(--primary-color),10%);
      }
     a {
-      color: $top-bar-text-color;
+      color: var(--secondary-color);
       text-decoration: none;
       font-size: $top-bar-text-size;
       &:hover {
@@ -56,7 +64,7 @@ body {
 
   /* Welcome text */
   span {
-      color: $top-bar-text-color;
+      color: var(--secondary-color);
       font-size: $top-bar-text-size;
     }
 

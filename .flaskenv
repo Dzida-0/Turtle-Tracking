@@ -1,2 +1,2 @@
 FLASK_APP=turtle_app
-FLASK_CONFIG=production
+FLASK_CONFIG=development
