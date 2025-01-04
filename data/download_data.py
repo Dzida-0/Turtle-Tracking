@@ -78,7 +78,6 @@ def download_turtles_positions(turtle_id: int, positions_quantity: Optional[int]
         response = requests.get(url, timeout=5)
         response.raise_for_status()
         data = response.json()
-        os.makedirs("data/raw", exist_ok=True)
         with open(os.path.join(f"{config.DevelopmentConfig.STORAGE_PATH}/json", f'turtles{turtle_id}_positions.json'), "w") as f:
             json.dump(data, f)
         return {True: ""}
@@ -99,21 +98,24 @@ def download_turtles_positions(turtle_id: int, positions_quantity: Optional[int]
 
 def download_image(image_url: str, turtle_id: int) -> Dict[bool, str]:
     """
-    Download an image from a URL and save it to the configured folder.
+    Download an image from a URL and save it as a PNG file in the configured folder.
 
-    :param turtle_id:
     :param image_url: The URL of the image.
-    :return: The filename of the saved image, or an error message.
+    :param turtle_id: The unique identifier of the turtle.
+    :return: A dictionary indicating success (True/False) and a message (or empty string).
     """
     try:
         response = requests.get(image_url, stream=True)
         response.raise_for_status()  # Ensure the request was successful
-        save_path = os.path.join(f"{config.DevelopmentConfig.STORAGE_PATH}/photos", f'turtle_{turtle_id}')
+
+        # Define the save path with .png extension
+        save_path = os.path.join(f"{config.DevelopmentConfig.STORAGE_PATH}/photos", f'turtle_{turtle_id}.png')
+
         # Save the image
         with open(save_path, "wb") as img_file:
             for chunk in response.iter_content(chunk_size=8192):
                 img_file.write(chunk)
 
-        return {True: ""}
+        return {True: f"Image saved as {save_path}"}
     except requests.exceptions.RequestException as e:
         return {False: f"Error downloading image: {e}"}

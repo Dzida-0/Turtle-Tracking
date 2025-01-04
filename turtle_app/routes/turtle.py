@@ -12,7 +12,7 @@ turtle_bp = Blueprint('turtle', __name__)
 def turtles():
     all_turtles = Turtle.query.all()
     if not all_turtles:
-        abort(404)
+        abort(500)
     favorites = []
 
     if current_user.is_authenticated:

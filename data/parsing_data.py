@@ -3,7 +3,7 @@ from typing import Tuple
 import re
 
 import config
-from download_data import download_image
+from download_data import download_image,download_turtles_positions
 from turtle_app.models import Turtle, TurtlePosition
 from turtle_app.extensions import db
 import json
@@ -87,19 +87,20 @@ def parse_description(description: str) -> Tuple:
     return turtle_sex, turtle_age, length, length_type, width, width_type
 
 
-def parse_turtle_info():  # Path to your SQLite database file
-
+def parse_turtle_info():
+    ret = {}
     try:
         with open(os.path.join(f"{config.DevelopmentConfig.STORAGE_PATH}/json", f'turtles_info.json'), "r") as f:
             data = json.load(f)
 
         # Establish database connection
-        conn = sqlite3.connect(config.DevelopmentConfig.SQLALCHEMY_DATABASE_URI)
+        db_path = config.DevelopmentConfig.SQLALCHEMY_DATABASE_URI.replace("sqlite:///", "")
+        conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
 
         # Ensure the turtles table exists
         cursor.execute("""
-            CREATE TABLE IF NOT EXISTS turtles (
+            CREATE TABLE IF NOT EXISTS turtle (
                 id TEXT PRIMARY KEY,
                 name TEXT,
                 last_position TEXT,
@@ -119,8 +120,14 @@ def parse_turtle_info():  # Path to your SQLite database file
         for turtle in data:
             turtle_id = turtle.get("id", "")
             name = turtle.get("name", "")
-            last_position = turtle.get("point", {}).get("coordinates", [])
-            last_position = ','.join(map(str, [last_position[0], last_position[1]])) if last_position else None
+
+            # Safely extract last_position
+            point = turtle.get("point")
+            if point and isinstance(point, dict):
+                coordinates = point.get("coordinates", [])
+                last_position = ','.join(map(str, [coordinates[0], coordinates[1]])) if len(coordinates) == 2 else None
+            else:
+                last_position = None
 
             is_active = None
             turtle_sex = None
@@ -146,18 +153,25 @@ def parse_turtle_info():  # Path to your SQLite database file
                 elif attribute.get("code", "") == "Biography":
                     biography = attribute.get("value", "")
 
-            picture_url = turtle.get("image", {}).get("urls", {}).get("origin", None)
-            if picture_url:
-                download_image(picture_url, turtle_id)
+            # Safely extract image URL
+            image = turtle.get("image")
+            if image and isinstance(image, dict):
+                urls = image.get("urls", {})
+                picture_url = urls.get("origin", None)
+            else:
+                picture_url = None
+
+            ret[turtle_id] = picture_url
+
 
             # Check if the turtle already exists
-            cursor.execute("SELECT id FROM turtles WHERE id = ?", (turtle_id,))
+            cursor.execute("SELECT id FROM turtle WHERE id = ?", (turtle_id,))
             existing_turtle = cursor.fetchone()
 
             if existing_turtle:
                 # Update existing turtle
                 cursor.execute("""
-                    UPDATE turtles
+                    UPDATE turtle
                     SET name = ?, last_position = ?, is_active = ?, turtle_sex = ?,
                         turtle_age = ?, length = ?, length_type = ?, width = ?,
                         width_type = ?, project_name = ?, biography = ?, description = ?
@@ -170,7 +184,7 @@ def parse_turtle_info():  # Path to your SQLite database file
             else:
                 # Insert new turtle
                 cursor.execute("""
-                    INSERT INTO turtles (
+                    INSERT INTO turtle (
                         id, name, last_position, is_active, turtle_sex,
                         turtle_age, length, length_type, width, width_type,
                         project_name, biography, description
@@ -184,6 +198,7 @@ def parse_turtle_info():  # Path to your SQLite database file
         # Commit changes
         conn.commit()
         logging.info("Turtles data parsed and saved successfully.")
+        return ret
 
     except FileNotFoundError:
         logging.error("Turtles info JSON file not found.")
@@ -195,28 +210,50 @@ def parse_turtle_info():  # Path to your SQLite database file
             cursor.close()
             conn.close()
 
-def parse_turtle_positions(turtle_id) -> None:
+
+def parse_turtle_positions(turtle_id: int) -> None:
     try:
-        with open(f"data/raw/turtles{turtle_id}_positions.json", "r") as f:
+        # Open the JSON file
+        with open(os.path.join(f"{config.DevelopmentConfig.STORAGE_PATH}/json", f'turtles{turtle_id}_positions.json'), "r") as f:
             data = json.load(f)
             if "results" in data:
+                # Establish database connection
+                db_path = config.DevelopmentConfig.SQLALCHEMY_DATABASE_URI.replace("sqlite:///", "")
+                conn = sqlite3.connect(db_path)
+                cursor = conn.cursor()
+
+                # Ensure the turtle_positions table exists
+                cursor.execute("""
+                    CREATE TABLE IF NOT EXISTS turtle_pos (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        turtle_id INTEGER,
+                        x REAL,
+                        y REAL
+                    )
+                """)
+
                 for position in data.get('results'):
                     if "data" in position:
-                        data = position.get("data", "")
+                        position_data = position.get("data", {})
+                        x = position_data.get("Lat")
+                        y = position_data.get("Lng")
 
-                        new_turtle_position = TurtlePosition(
-                            turtle_id=turtle_id,
-                            x=data.get("Lat"),
-                            y=data.get("Lng")
-                        )
-                        db.session.add(new_turtle_position)
+                        # Insert the position into the database
+                        cursor.execute("""
+                            INSERT INTO turtle_pos (turtle_id, x, y)
+                            VALUES (?, ?, ?)
+                        """, (turtle_id, x, y))
 
-        try:
-            db.session.commit()
-            logging.info("Turtles data parsed and saved successfully.")
-        except Exception as e:
-            db.session.rollback()
-            logging.error(f"Error saving turtles to database: {e}")
-
+                # Commit the transaction
+                conn.commit()
+                logging.info(f"Turtle positions for turtle_id={turtle_id} parsed and saved successfully.")
     except FileNotFoundError:
-        pass
+        logging.warning(f"File for turtle_id={turtle_id} not found.")
+    except Exception as e:
+        if 'conn' in locals():
+            conn.rollback()  # Rollback in case of any error
+        logging.error(f"Error processing turtle positions for turtle_id={turtle_id}: {e}")
+    finally:
+        if 'conn' in locals():
+            cursor.close()
+            conn.close()
