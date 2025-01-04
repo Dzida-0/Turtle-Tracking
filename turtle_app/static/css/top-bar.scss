@@ -1,0 +1,165 @@
+/* Top bar */
+
+$top-bar-text-size: 1.2rem;
+
+
+.navbar {
+  background-color: var(--primary-color);
+
+  /* Vertical layout */
+  ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    display: flex;
+    justify-content: space-around;
+  }
+
+  /* Menu */
+  li {
+    position: relative;
+    padding: 10px 30px 10px 20px;
+
+    &:hover {
+        background-color: var(--primary-color-dark);
+     }
+    a {
+      color: var(--secondary-color);
+      text-decoration: none;
+      font-size: $top-bar-text-size;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+        /* For theme button */
+    &:last-child {
+        padding-right: 0;
+      }
+  }
+
+  /* Welcome text */
+  span {
+      color: var(--secondary-color);
+      font-size: $top-bar-text-size;
+    }
+
+  /* Favorites menu */
+  .dropdown-menu-turtles {
+    display: none;
+    position: absolute ;
+    top: 100%;
+    left: 0;
+
+    background-color: var(--primary-color);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-radius: 5px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+  }
+  .dropdown-menu-turtles a {
+    color: var(--text-color);
+    padding: 10px 20px;
+    display: block;
+    white-space: nowrap;
+  }
+
+  .turtle-list-nav:hover +  .dropdown-menu-turtles {
+      display: block;
+  }
+
+   .dropdown-menu-turtles:hover{
+     display: block;
+  }
+
+
+
+
+
+  /* Color menu */
+  .color-menu {
+    position: relative;
+    width: 15px;
+    height: 15px;
+  }
+
+
+  .dropdown-color-menu {
+    display: none;
+    position: absolute ;
+    top: 100%;
+    right: 0;
+
+    background-color: #444;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-radius: 5px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+
+
+    .color-box {
+      .color-palette {
+        display: flex;
+        gap: 5px;
+        .b {
+          height: 10px;
+          width: auto;
+          border-radius: 5px;
+          border: 1px solid #000000;
+
+        }
+      }
+    }
+
+    /* Use theme variables for the color boxes */
+    .theme-1 {
+      .b1{
+         background-color: var(--primary-color);
+      }
+      .b2{
+         background-color: var(--secondary-color);
+      }
+      .b3{
+         background-color: var(--background-color);
+      }
+      .b4{
+         background-color: var(--text-color);
+      }
+    }
+
+    .theme-2 {
+     .b1{
+         background-color: var(--primary-color);
+      }
+      .b2{
+         background-color: var(--secondary-color);
+      }
+      .b3{
+         background-color: var(--background-color);
+      }
+      .b4{
+         background-color: var(--text-color);
+      }/* Background color for dark theme */
+    }
+}
+ .dropdown-menu-turtles button {
+    color: white;
+    padding: 10px 20px;
+    display: block;
+    white-space: nowrap;
+}
+  .color-menu:hover > .dropdown-color-menu,
+.dropdown-color-menu:hover {
+  display: block; /* Show the dropdown on hover */
+}
+
+
+  .color-menu-li:hover  >  .dropdown-color-menu {
+    display: block;
+  }
+
+}
+

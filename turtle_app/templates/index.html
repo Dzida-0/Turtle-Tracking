@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block head %}
-    <title>"Hello"</title>
+    Home
 {% endblock %}
 
 {% block body %}
@@ -11,8 +11,7 @@
     </header>
     <main>
 
-      <button onclick="switchTheme('dark-theme')">Dark Theme</button><button onclick="switchTheme('light-theme')">Light Theme</button>
-        <button onclick="switchTheme('dark-theme')">Dark Theme</button>
+
 
 
 
@@ -20,17 +19,7 @@
     </main>
 
 
+
 {% endblock %}
 
-<script>
-  function switchTheme(theme) {
-    document.documentElement.className = theme;
-    localStorage.setItem('theme', theme); // Save the theme in localStorage
-  }
 
-  // Apply the saved theme on page load
-  document.addEventListener('DOMContentLoaded', () => {
-    const savedTheme = localStorage.getItem('theme') || 'light-theme';
-    document.documentElement.className = savedTheme;
-  });
-</script>

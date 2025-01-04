@@ -1,0 +1,78 @@
+/* Turtle list*/
+$list-gap: 20px;
+$borders-color: #ddd;
+$turtle-box-bg-color: #f9f9f9;
+
+
+.turtle-list {
+    display: flex;
+    flex-direction: column;
+    gap: $list-gap;
+    margin: 20px;
+
+  /* Single turtle */
+  .turtle-item {
+    display: flex;
+    align-items: center;
+    background-color: var(--primary-color);
+    padding: 10px;
+    border: 2px solid $borders-color;
+    border-radius: 10px;
+    transition: opacity 0.3s ease;
+    /* hover over */
+    &:hover + .turtle-info{
+      background-color: var(--secondary-color);
+    }
+
+  }
+
+  .turtle-name{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .turtle-info{
+    background-color: var(--primary-color);
+    &:hover {
+      background-color: var(--secondary-color);
+    }
+    a {
+      text-decoration: none;
+      color: inherit;
+      &:visited{
+        color: inherit;
+      }
+    }
+  }
+
+   /* Turtle picture */
+  .turtle-item img.turtle-picture {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin-right: 15px;
+    object-fit: cover;
+    border: 2px solid $borders-color;
+  }
+
+  .favorite-label {
+  display: inline-block;
+  cursor: pointer;
+
+    .favorite-checkbox {
+      display: none;
+    }
+
+    .favorite-icon {
+      width: 24px;
+      height: 24px;
+      display: inline-block;
+      background-image: url("../heart.png");
+      background-size: cover;
+      transition: background 0.3s ease;
+    }
+    .favorite-checkbox:checked + .favorite-icon {
+      background-image: url('../heart_red.png');
+    }
+  }
+}

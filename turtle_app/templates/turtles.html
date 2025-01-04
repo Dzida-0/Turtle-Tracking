@@ -1,12 +1,20 @@
 {% extends 'base.html' %}
 
 {% block head %}
-    <title>"Turtles"</title>
+    Turtles
 {% endblock %}
 
 {% block body %}
-    <h1>All Turtles</h1>
-    <button id="toggle-active" class="btn">Hide Inactive</button>
+    <div class="toggle-buttons">
+        <button id="toggle-inactive" class="btn">
+            <img src="{{url_for('static', filename='icon-on.png')}}" alt="Show inactive turtles" class="inactive-icon">
+            <span>Show Inactive Turtles</span>
+        </button>
+        <button id="toggle-no-description" class="btn">
+            <img src="{{url_for('static', filename='icon-off.png')}}" alt="Show turtles with no description" class="description-icon">
+            <span>Show Turtles with No Description</span>
+        </button>
+    </div>
         <div class="turtle-list">
         {% for turtle in turtles %}
 
@@ -26,47 +34,11 @@
                         <span class="favorite-icon"></span>
                     </label>
                 </div>
-                <p>{{ turtle.description }}</p>
+                <p class="turtle-description {% if turtle.description == 'None' %}short-description{% endif %}">{{ turtle.description }}</p>
             </div>
         </div>
         {% endfor %}
     </div>
 
-
-    <script>
-    document.querySelectorAll('.favorite-checkbox').forEach(checkbox => {
-        checkbox.addEventListener('change', function() {
-            const turtleId = this.dataset.turtleId;
-            const isFavorite = this.checked;
-
-            fetch('/update_favorite', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': '{{ csrf_token() }}'
-                },
-                body: JSON.stringify({ turtle_id: turtleId, favorite: isFavorite })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (!data.success) {
-                    alert('Error updating favorite status!');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Error updating favorite status!');
-            });
-        });
-    });
-
-    const toggleButton = document.getElementById('toggle-active');
-    toggleButton.addEventListener('click', function() {
-        document.querySelectorAll('.turtle-item.inactive').forEach(item => {
-            item.classList.toggle('hidden');
-        });
-        toggleButton.textContent =
-            toggleButton.textContent === 'Hide Inactive' ? 'Show Inactive' : 'Hide Inactive';
-    });
-    </script>
+<script src="{{ url_for('static', filename='js/turtle-list.js') }}" defer></script>
 {% endblock %}

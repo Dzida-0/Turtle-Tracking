@@ -105,6 +105,7 @@ def download_image(image_url: str, turtle_id: int) -> Dict[bool, str]:
     :param image_url: The URL of the image.
     :return: The filename of the saved image, or an error message.
     """
+    print('ddddd')
     try:
         response = requests.get(image_url, stream=True)
         response.raise_for_status()  # Ensure the request was successful

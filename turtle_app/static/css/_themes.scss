@@ -1,15 +1,19 @@
-.light-theme {
+.theme-1 {
   --primary-color: #3498db;
   --secondary-color: #2ecc71;
   --background-color: #ffffff;
   --text-color: #000000;
+  /**/
+   --primary-color-dark: #0860c4;
 }
 
-.dark-theme {
+.theme-2 {
   --primary-color: #1abc9c;
-  --secondary-color: #e74c3c;
+  --secondary-color: #ffcc02;
   --background-color: #2c3e50;
   --text-color: #ecf0f1;
+  /**/
+  --primary-color-dark: #26857b;
 }
 
 

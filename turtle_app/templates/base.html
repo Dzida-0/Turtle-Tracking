@@ -2,16 +2,17 @@
     <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <link rel="stylesheet" href="{{url_for('static',filename='styles.css')}}"/>
-        <title>Turtle Tracking</title>
-        {% block head %} {% endblock %}
+        <meta name="csrf-token" content="{{ csrf_token }}">
+
+        <link rel="stylesheet" href="{{url_for('static',filename='css/styles.css')}}"/>
+        <title>Turtle Tracking - {% block head %}{% endblock %}</title>
     </head>
     <body>
         <nav class="navbar">
             <ul>
                 <li><a href="{{ url_for('main.index') }}">Home</a></li>
                 <li><a class = "turtle-list-nav" href="{{ url_for('turtle.turtles') }}">Turtles</a>
-                     <ul class="dropdown-menu">
+                     <ul class="dropdown-menu-turtles">
                         {% for turtle in favorites %}
                             <li><a href="{{ url_for('turtle.turtle', turtle_id=turtle.id) }}">{{ turtle.name }}</a></li>
                         {% else %}
@@ -29,6 +30,30 @@
                     <li><a href="{{ url_for('auth.register') }}">Register</a></li>
                 {% endif %}
 
+                <li class="color-menu-li"> <img src="{{ url_for('static', filename='color-icon.png')}}" class="color-menu">
+                    <ul class="dropdown-color-menu">
+                        <li>
+                            <div class="color-box light-theme" onclick="switchTheme('light-theme')">
+                                <ul class="color-palette">
+                                    <li class="b1 b"></li>
+                                    <li class="b2 b"></li>
+                                    <li class="b3 b"></li>
+                                    <li class="b4 b"></li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="color-box dark-theme" onclick="switchTheme('dark-theme')">
+                                <ul class="color-palette">
+                                    <li class="b1 b"></li>
+                                    <li class="b2 b"></li>
+                                    <li class="b3 b"></li>
+                                    <li class="b4 b"></li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
             </ul>
         </nav>
         {% with messages = get_flashed_messages(with_categories=true) %}
@@ -41,8 +66,6 @@
             {% endif %}
         {% endwith %}
         {% block body %} {% endblock %}
-
-
     </body>
-
+<script src="{{ url_for('static', filename='js/theme.js') }}" defer></script>
     </html>

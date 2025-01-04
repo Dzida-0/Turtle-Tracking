@@ -2,7 +2,7 @@ import json
 import logging
 from typing import Tuple
 import re
-
+from .download_data import download_image
 from turtle_app.models import Turtle, TurtlePosition
 from turtle_app.extensions import db
 
@@ -86,9 +86,11 @@ def parse_description(description: str) -> Tuple:
 
 def parse_turtle_info() -> None:
     try:
-        with open("data/raw/turtles_info.json", "r") as f:
+        with open("raw/turtles_info.json", "r") as f:
             data = json.load(f)
         for turtle in data:
+            print(turtle)
+            print('e')
             turtle_id = turtle.get("id", "")
             name = turtle.get("name", "")
             last_position = turtle.get("point", "").get("coordinates", "")
@@ -114,40 +116,44 @@ def parse_turtle_info() -> None:
                     project_name = attribute.get("value", "")
                 elif attribute.get("code", "") == "Biography":
                     biography = attribute.get("value", "")
+            picture_url = turtle.get("image", None).get("urls", None).get("origin", None)
+            print(picture_url)
+            if picture_url:
+                download_image(picture_url, turtle_id)
 
-                existing_turtle = Turtle.query.get(turtle_id)
-                if existing_turtle:
+            existing_turtle = Turtle.query.get(turtle_id)
+            if existing_turtle:
 
-                    existing_turtle.name = name
-                    existing_turtle.last_position = last_position
-                    existing_turtle.is_active = is_active
-                    existing_turtle.turtle_sex = turtle_sex
-                    existing_turtle.turtle_age = turtle_age
-                    existing_turtle.length = length
-                    existing_turtle.length_type = length_type
-                    existing_turtle.width = width
-                    existing_turtle.width_type = width_type
-                    existing_turtle.project_name = project_name
-                    existing_turtle.biography = biography
-                    existing_turtle.description = description
-                else:
+                existing_turtle.name = name
+                existing_turtle.last_position = last_position
+                existing_turtle.is_active = is_active
+                existing_turtle.turtle_sex = turtle_sex
+                existing_turtle.turtle_age = turtle_age
+                existing_turtle.length = length
+                existing_turtle.length_type = length_type
+                existing_turtle.width = width
+                existing_turtle.width_type = width_type
+                existing_turtle.project_name = project_name
+                existing_turtle.biography = biography
+                existing_turtle.description = description
+            else:
 
-                    new_turtle = Turtle(
-                        id=turtle_id,
-                        name=name,
-                        last_position=last_position,
-                        is_active=is_active,
-                        turtle_sex=turtle_sex,
-                        turtle_age=turtle_age,
-                        length=length,
-                        length_type=length_type,
-                        width=width,
-                        width_type=width_type,
-                        project_name=project_name,
-                        biography=biography,
-                        description=description,
-                    )
-                    db.session.add(new_turtle)
+                new_turtle = Turtle(
+                    id=turtle_id,
+                    name=name,
+                    last_position=last_position,
+                    is_active=is_active,
+                    turtle_sex=turtle_sex,
+                    turtle_age=turtle_age,
+                    length=length,
+                    length_type=length_type,
+                    width=width,
+                    width_type=width_type,
+                    project_name=project_name,
+                    biography=biography,
+                    description=description,
+                )
+                db.session.add(new_turtle)
 
         try:
             db.session.commit()
@@ -187,3 +193,5 @@ def parse_turtle_positions(turtle_id) -> None:
         pass
 
 
+if __name__ == '__main__':
+    parse_turtle_info()

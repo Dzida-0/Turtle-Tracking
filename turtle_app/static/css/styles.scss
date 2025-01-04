@@ -1,0 +1,109 @@
+@import "themes"; /* for color themes */
+@import "turtle-list";
+@import "top-bar";
+
+/* Color */
+/*$background-color: #FBF6E9;*/
+/* Top bar */
+/*$top-bar-color: rgba(136, 220, 239, 0.78);*/
+/*$top-bar-text-color: #0019be;*/
+$top-bar-text-size: 1.2rem;
+/* Turtle list*/
+$list-margin: 20px;
+$list-gap: 20px;
+$borders-color: #ddd;
+$turtle-box-bg-color: #f9f9f9;
+$turtle-box-inside-padding: 10px;
+
+
+body {
+  background-color: var(--background-color);
+  width: auto;
+  height: auto;
+  margin: 0;
+}
+
+
+/* Turtle page */
+
+.toggle-buttons {
+    display: flex;
+    justify-content: center; /* Center the buttons horizontally */
+    gap: 20px; /* Space between the buttons */
+    margin-top: 20px; /* Optional margin for spacing */
+
+    .btn {
+        display: flex;
+        align-items: center; /* Align text and images vertically */
+        gap: 10px; /* Space between the image and text */
+        padding: 10px 20px; /* Padding around the button */
+        background: none; /* Remove default button background */
+        border: none; /* Remove default button border */
+        cursor: pointer;
+
+        img {
+            width: 30px; /* Set the size of the images */
+            height: 30px;
+        }
+
+        span {
+            font-size: 16px;
+            color: #333; /* Text color */
+        }
+
+        &:hover span {
+            text-decoration: underline; /* Add underline on hover */
+        }
+    }
+
+
+}
+
+.turtle-top-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.turtle-bottom-container{
+  display: flex;
+   justify-content: space-between;
+  align-items: flex-start;
+}
+.turtle-info {
+    background-color: $turtle-box-bg-color;
+    flex: 1;
+    margin-right: 20px;
+        }
+.turtle-picture {
+    max-width: 50%;
+    max-height: 70%;
+    border-radius: 10px;
+    object-fit: cover;
+    margin: 10px;
+        }
+.turtle-picture-box {
+    object-fit: cover;
+    margin: 10px;
+        }
+.map-container {
+    margin: 20px;
+    width: 800px;
+    height: 800px;
+
+    .map-turtle {
+      width: 100%;
+      height: 100%;
+    }
+}
+
+
+.turtle-description{
+  margin: 20px;
+  padding: 20px;
+}
+.turtle-description h2{
+  width: 400px;
+}
+.turtle-description p{
+  width: 400px;
+}

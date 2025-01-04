@@ -11,11 +11,14 @@ class BaseConfig:
 
 
 class DevelopmentConfig(BaseConfig):
-    logging.info("4")
     instance_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'instance')
     if not os.path.exists(instance_path):
         os.makedirs(instance_path)
     SQLALCHEMY_DATABASE_URI = f'sqlite:///{os.path.join(instance_path, "database.db")}'
+    photo_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'photo')
+    if not os.path.exists(photo_path):
+        os.makedirs(photo_path)
+    IMAGE_FOLDER = photo_path
 
 
 class ProductionConfig(BaseConfig):

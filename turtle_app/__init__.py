@@ -12,13 +12,14 @@ from data.data_parsing import parse_turtle_info, parse_turtle_positions
 from .errors import create_error_handlers
 from flask_assets import Environment, Bundle
 
+
 def create_app():
     application = Flask(__name__)
     application.config.from_object(config[os.getenv('FLASK_CONFIG', 'development')])
     db.init_app(application)
     login_manager.init_app(application)
     assets = Environment(application)
-    scss = Bundle('static/styles.scss', filters='scss', output='static/styles.css')
+    scss = Bundle('css/*.scss',filters='scss',output='css/styles.css')
     assets.register('scss_all', scss)
 
     csrf.init_app(application)
@@ -32,7 +33,7 @@ def create_app():
     with application.app_context():
         db.create_all()
         # download_turtles_info()
-        # parse_turtle_info()
+        #parse_turtle_info()
         # turtles = Turtle.query.all()
         # for turtle in turtles:
         # parse_turtle_positions(turtle.id)
