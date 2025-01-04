@@ -4,7 +4,7 @@
   --background-color: #ffffff;
   --text-color: #000000;
   /**/
-  --primary-color-dark: #0860c4;
+  --primary-color-dark: #3469db;
 }
 
 .theme-2 {
@@ -334,7 +334,6 @@ body {
 .navbar {
   background-color: var(--primary-color);
   /* Vertical layout */
-  /* Menu */
   /* Welcome text */
   /* Favorites menu */
   /* Color menu */
@@ -344,26 +343,25 @@ body {
   margin: 0;
   list-style: none;
   display: flex;
+  align-items: center;
   justify-content: space-around;
+  /* Menu */
 }
-.navbar li {
+.navbar ul li {
   position: relative;
-  padding: 10px 30px 10px 20px;
-  /* For theme button */
+  padding: 10px 20px 10px 20px;
+  background-color: var(--primary-color);
 }
-.navbar li:hover {
-  background-color: var(--primary-color-dark);
-}
-.navbar li a {
+.navbar ul li a {
   color: var(--secondary-color);
   text-decoration: none;
   font-size: 1.2rem;
 }
-.navbar li a:hover {
+.navbar ul li a:hover {
   text-decoration: underline;
 }
-.navbar li:last-child {
-  padding-right: 0;
+.navbar ul .menu-li:hover {
+  background-color: var(--primary-color-dark);
 }
 .navbar span {
   color: var(--secondary-color);
@@ -394,6 +392,12 @@ body {
 .navbar .dropdown-menu-turtles:hover {
   display: block;
 }
+.navbar .dropdown-menu-turtles button {
+  color: white;
+  padding: 10px 20px;
+  display: block;
+  white-space: nowrap;
+}
 .navbar .color-menu {
   position: relative;
   width: 15px;
@@ -404,14 +408,13 @@ body {
   position: absolute;
   top: 100%;
   right: 0;
-  background-color: #444;
   list-style: none;
   margin: 0;
   padding: 0;
   border-radius: 5px;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   z-index: 1000;
-  /* Use theme variables for the color boxes */
+  /* Theme color boxes */
 }
 .navbar .dropdown-color-menu .color-box .color-palette {
   display: flex;
@@ -422,6 +425,9 @@ body {
   width: auto;
   border-radius: 5px;
   border: 1px solid #000000;
+}
+.navbar .dropdown-color-menu li:hover {
+  background-color: var(--primary-color-dark);
 }
 .navbar .dropdown-color-menu .theme-1 .b1 {
   background-color: var(--primary-color);
@@ -435,9 +441,6 @@ body {
 .navbar .dropdown-color-menu .theme-1 .b4 {
   background-color: var(--text-color);
 }
-.navbar .dropdown-color-menu .theme-2 {
-  /* Background color for dark theme */
-}
 .navbar .dropdown-color-menu .theme-2 .b1 {
   background-color: var(--primary-color);
 }
@@ -450,21 +453,27 @@ body {
 .navbar .dropdown-color-menu .theme-2 .b4 {
   background-color: var(--text-color);
 }
-.navbar .dropdown-menu-turtles button {
-  color: white;
-  padding: 10px 20px;
-  display: block;
-  white-space: nowrap;
-}
 .navbar .color-menu:hover > .dropdown-color-menu,
 .navbar .dropdown-color-menu:hover {
-  display: block; /* Show the dropdown on hover */
+  display: block;
 }
 .navbar .color-menu-li:hover > .dropdown-color-menu {
   display: block;
 }
 
 /* Turtle list*/
+.toggle-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+.toggle-buttons button {
+  padding: 20px 0 20px 0;
+}
+.toggle-buttons button span {
+  color: var(--text-color);
+}
+
 .turtle-list {
   display: flex;
   flex-direction: column;
@@ -478,13 +487,13 @@ body {
   align-items: center;
   background-color: var(--primary-color);
   padding: 10px;
-  border: 2px solid #ddd;
+  border: 2px solid var(--text-color);
   border-radius: 10px;
   transition: opacity 0.3s ease;
   /* hover over */
 }
-.turtle-list .turtle-item:hover + .turtle-info {
-  background-color: var(--secondary-color);
+.turtle-list .turtle-item:hover {
+  background-color: var(--primary-color-dark);
 }
 .turtle-list .turtle-name {
   display: flex;
@@ -495,7 +504,7 @@ body {
   background-color: var(--primary-color);
 }
 .turtle-list .turtle-info:hover {
-  background-color: var(--secondary-color);
+  background-color: var(--primary-color-dark);
 }
 .turtle-list .turtle-info a {
   text-decoration: none;
@@ -510,7 +519,7 @@ body {
   border-radius: 50%;
   margin-right: 15px;
   object-fit: cover;
-  border: 2px solid #ddd;
+  border: 2px solid var(--text-color);
 }
 .turtle-list .favorite-label {
   display: inline-block;

@@ -1,0 +1,5 @@
+from download_data import download_turtles_info,download_turtles_positions,download_image
+from data_parsing import parse_turtle_info, parse_turtle_positions
+
+download_turtles_info()
+parse_turtle_info()

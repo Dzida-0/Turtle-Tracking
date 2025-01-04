@@ -1,4 +1,4 @@
-from flask import render_template, Blueprint,current_app
+from flask import render_template, Blueprint, current_app
 import os
 from flask import current_app
 import folium
@@ -52,14 +52,12 @@ def create_interactive_map(positions):
         opacity=0.8
     ).add_to(m)
 
-    # Save map as HTML file in templates folder
-    templates_path = os.path.join(current_app.root_path, 'templates/maps')
-    os.makedirs(templates_path, exist_ok=True)  # Ensure the directory exists
-
-    map_path = os.path.join(templates_path, 'generated_map.html')
-    m.save(map_path)
+    map_path = os.path.join(current_app.config.get('STORAGE_PATH'), "maps")
+    m.save(map_path + '\generated_map.html')
 
     return map_path
+
+
 def create_animated_path():
     points = [
         [34.0522, -118.2437],
@@ -80,7 +78,7 @@ def create_animated_path():
     path = folium.PolyLine(points, color="blue", weight=3)
     m.add_child(path)
 
-    # Add custom JavaScript for animation
+    # Add custom JavaScript for animationy
     js = """
     var polyline = L.polyline(
         {{ coordinates }},
@@ -114,7 +112,7 @@ def create_animated_path():
     m.save(map_path)
     return map_path
 
+
 @main_bp.route('/')
 def index():
-
     return render_template('index.html')

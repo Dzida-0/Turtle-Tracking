@@ -7,12 +7,12 @@
 {% block body %}
     <div class="toggle-buttons">
         <button id="toggle-inactive" class="btn">
-            <img src="{{url_for('static', filename='icon-on.png')}}" alt="Show inactive turtles" class="inactive-icon">
             <span>Show Inactive Turtles</span>
+            <img src="{{url_for('static', filename='icon-on.png')}}" alt="Show inactive turtles" class="inactive-icon">
         </button>
         <button id="toggle-no-description" class="btn">
-            <img src="{{url_for('static', filename='icon-off.png')}}" alt="Show turtles with no description" class="description-icon">
             <span>Show Turtles with No Description</span>
+            <img src="{{url_for('static', filename='icon-off.png')}}" alt="Show turtles with no description" class="description-icon">
         </button>
     </div>
         <div class="turtle-list">

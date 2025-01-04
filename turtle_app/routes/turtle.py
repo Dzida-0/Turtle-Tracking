@@ -1,4 +1,4 @@
-from flask import render_template, Blueprint, abort, request, jsonify, session
+from flask import render_template, Blueprint, abort, request, jsonify, session, send_from_directory
 from flask_login import current_user, user_logged_out, user_logged_in
 
 from .main import create_interactive_map
@@ -27,10 +27,10 @@ def turtles():
 @turtle_bp.route('/generated_map<int:turtle_id>')
 def generated_map(turtle_id):
     positions = TurtlePosition.query.filter_by(turtle_id=turtle_id).all()
-    map_path = create_interactive_map(positions)
     if not positions:
         return "No positions available for this turtle.", 404
-    return render_template('maps/generated_map.html')
+    map_path = create_interactive_map(positions)
+    return send_from_directory(map_path,'generated_map.html')
 
 
 @turtle_bp.route('/turtle/<int:turtle_id>')

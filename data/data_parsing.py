@@ -1,11 +1,14 @@
-import json
-import logging
+import os
 from typing import Tuple
 import re
-from .download_data import download_image
+
+import config
+from download_data import download_image
 from turtle_app.models import Turtle, TurtlePosition
 from turtle_app.extensions import db
-
+import json
+import logging
+import sqlite3
 
 def remove_HTML_elements(text: str) -> str:
     """
@@ -84,17 +87,41 @@ def parse_description(description: str) -> Tuple:
     return turtle_sex, turtle_age, length, length_type, width, width_type
 
 
-def parse_turtle_info() -> None:
+def parse_turtle_info():  # Path to your SQLite database file
+
     try:
-        with open("raw/turtles_info.json", "r") as f:
+        with open(os.path.join(f"{config.DevelopmentConfig.STORAGE_PATH}/json", f'turtles_info.json'), "r") as f:
             data = json.load(f)
+
+        # Establish database connection
+        conn = sqlite3.connect(config.DevelopmentConfig.SQLALCHEMY_DATABASE_URI)
+        cursor = conn.cursor()
+
+        # Ensure the turtles table exists
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS turtles (
+                id TEXT PRIMARY KEY,
+                name TEXT,
+                last_position TEXT,
+                is_active TEXT,
+                turtle_sex TEXT,
+                turtle_age TEXT,
+                length REAL,
+                length_type TEXT,
+                width REAL,
+                width_type TEXT,
+                project_name TEXT,
+                biography TEXT,
+                description TEXT
+            )
+        """)
+
         for turtle in data:
-            print(turtle)
-            print('e')
             turtle_id = turtle.get("id", "")
             name = turtle.get("name", "")
-            last_position = turtle.get("point", "").get("coordinates", "")
-            last_position = ','.join(map(str, [last_position[0], last_position[1]]))
+            last_position = turtle.get("point", {}).get("coordinates", [])
+            last_position = ','.join(map(str, [last_position[0], last_position[1]])) if last_position else None
+
             is_active = None
             turtle_sex = None
             turtle_age = None
@@ -105,6 +132,7 @@ def parse_turtle_info() -> None:
             project_name = None
             biography = None
             description = None
+
             for attribute in turtle.get("attributes", []):
                 if attribute.get("code", "") == "is_active":
                     is_active = attribute.get("value", "")
@@ -112,59 +140,60 @@ def parse_turtle_info() -> None:
                     description = attribute.get("value", "")
                     if description is not None:
                         turtle_sex, turtle_age, length, length_type, width, width_type = parse_description(description)
+                        description = remove_HTML_elements(description)
                 elif attribute.get("code", "") == "Project":
                     project_name = attribute.get("value", "")
                 elif attribute.get("code", "") == "Biography":
                     biography = attribute.get("value", "")
-            picture_url = turtle.get("image", None).get("urls", None).get("origin", None)
-            print(picture_url)
+
+            picture_url = turtle.get("image", {}).get("urls", {}).get("origin", None)
             if picture_url:
                 download_image(picture_url, turtle_id)
 
-            existing_turtle = Turtle.query.get(turtle_id)
+            # Check if the turtle already exists
+            cursor.execute("SELECT id FROM turtles WHERE id = ?", (turtle_id,))
+            existing_turtle = cursor.fetchone()
+
             if existing_turtle:
-
-                existing_turtle.name = name
-                existing_turtle.last_position = last_position
-                existing_turtle.is_active = is_active
-                existing_turtle.turtle_sex = turtle_sex
-                existing_turtle.turtle_age = turtle_age
-                existing_turtle.length = length
-                existing_turtle.length_type = length_type
-                existing_turtle.width = width
-                existing_turtle.width_type = width_type
-                existing_turtle.project_name = project_name
-                existing_turtle.biography = biography
-                existing_turtle.description = description
+                # Update existing turtle
+                cursor.execute("""
+                    UPDATE turtles
+                    SET name = ?, last_position = ?, is_active = ?, turtle_sex = ?,
+                        turtle_age = ?, length = ?, length_type = ?, width = ?,
+                        width_type = ?, project_name = ?, biography = ?, description = ?
+                    WHERE id = ?
+                """, (
+                    name, last_position, is_active, turtle_sex,
+                    turtle_age, length, length_type, width,
+                    width_type, project_name, biography, description, turtle_id
+                ))
             else:
+                # Insert new turtle
+                cursor.execute("""
+                    INSERT INTO turtles (
+                        id, name, last_position, is_active, turtle_sex,
+                        turtle_age, length, length_type, width, width_type,
+                        project_name, biography, description
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """, (
+                    turtle_id, name, last_position, is_active, turtle_sex,
+                    turtle_age, length, length_type, width, width_type,
+                    project_name, biography, description
+                ))
 
-                new_turtle = Turtle(
-                    id=turtle_id,
-                    name=name,
-                    last_position=last_position,
-                    is_active=is_active,
-                    turtle_sex=turtle_sex,
-                    turtle_age=turtle_age,
-                    length=length,
-                    length_type=length_type,
-                    width=width,
-                    width_type=width_type,
-                    project_name=project_name,
-                    biography=biography,
-                    description=description,
-                )
-                db.session.add(new_turtle)
-
-        try:
-            db.session.commit()
-            logging.info("Turtles data parsed and saved successfully.")
-        except Exception as e:
-            db.session.rollback()
-            logging.error(f"Error saving turtles to database: {e}")
+        # Commit changes
+        conn.commit()
+        logging.info("Turtles data parsed and saved successfully.")
 
     except FileNotFoundError:
-        pass
-
+        logging.error("Turtles info JSON file not found.")
+    except Exception as e:
+        logging.error(f"An error occurred: {e}")
+        conn.rollback()
+    finally:
+        if conn:
+            cursor.close()
+            conn.close()
 
 def parse_turtle_positions(turtle_id) -> None:
     try:
@@ -191,7 +220,3 @@ def parse_turtle_positions(turtle_id) -> None:
 
     except FileNotFoundError:
         pass
-
-
-if __name__ == '__main__':
-    parse_turtle_info()
