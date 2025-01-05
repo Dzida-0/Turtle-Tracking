@@ -2,89 +2,16 @@ import os
 from typing import Tuple
 import re
 
-import config
-from download_data import download_image,download_turtles_positions
+from download import download_image,download_turtles_positions
 from turtle_app.models import Turtle, TurtlePosition
 from turtle_app.extensions import db
 import json
 import logging
 import sqlite3
 
-def remove_HTML_elements(text: str) -> str:
-    """
-    Remove unnecessary HTML elements form text.
-    :param text: Text
-    :return: Text
-    """
-    text = text.replace("&nbsp;", " ")
-    h = True
-    while h:
-        h = False
-        start = text.find('<')
-        stop = text.find('>')
-        if start >= 0 and stop >= 0:
-            new_text = text[:start]
-            if text[start - 1] != " ":
-                new_text += " "
-            new_text += text[stop + 1:]
-            text = new_text
-            h = True
-    return re.sub(r'\s+', ' ', text)
 
 
-def parse_description(description: str) -> Tuple:
-    """
 
-    :param description:
-    :return:
-    """
-    description = description.replace(".", "")
-    description = description.replace(",", "")
-    description = remove_HTML_elements(description)
-    d = description.split(" ")
-
-    she_count = sum(d.count(i) for i in ["she", "She", "female", "Female", "her", "Her"])
-    he_count = sum(d.count(i) for i in ["he", "He", "male", "Male", "his", "His"])
-    turtle_sex = None
-    if she_count > he_count >= 0:
-        turtle_sex = "Female"
-    elif he_count > she_count >= 0:
-        turtle_sex = "Male"
-
-    turtle_age = None
-    adult_count = sum(d.count(i) for i in ["adult", "Adult"])
-    kid_count = sum(d.count(i) for i in ["immature", "juvenile", "sub-adult"])
-    if adult_count > kid_count >= 0:
-        turtle_age = "Adult"
-    elif kid_count > adult_count >= 0:
-        turtle_age = "Sub-adult"
-
-    length = None
-    length_type = None
-    width = None
-    width_type = None
-    while "cm" in d:
-        e = d.index("cm")
-        dd = d[e:]
-        if "length" in dd:
-            f = dd.index("length")
-            if f <= 5:
-                length = d[e - 1]
-                if "curved" in d[e:e + f]:
-                    length_type = "curved"
-                elif "straight" in d[e:e + f]:
-                    length_type = "straight"
-        elif "width" in dd:
-            f = dd.index("width")
-            if f <= 5:
-                width = d[e - 1]
-                if any(substr in d[e:e + f] for substr in ["curved", "CCL"]):
-                    width_type = "curved"
-                elif any(substr in d[e:e + f] for substr in ["straight", "SCL"]):
-                    width_type = "straight"
-        d.remove(d[e])
-
-    return turtle_sex, turtle_age, length, length_type, width, width_type
 
 
 def parse_turtle_info():
@@ -197,7 +124,7 @@ def parse_turtle_info():
 
         # Commit changes
         conn.commit()
-        logging.info("Turtles data parsed and saved successfully.")
+        logging.info("Turtles lambda parsed and saved successfully.")
         return ret
 
     except FileNotFoundError:
@@ -211,7 +138,7 @@ def parse_turtle_info():
             conn.close()
 
 
-def parse_turtle_positions(turtle_id: int) -> None:
+def parse_turtle_positions(turtle_id: int,) -> None:
     try:
         # Open the JSON file
         with open(os.path.join(f"{config.DevelopmentConfig.STORAGE_PATH}/json", f'turtles{turtle_id}_positions.json'), "r") as f:
@@ -233,8 +160,8 @@ def parse_turtle_positions(turtle_id: int) -> None:
                 """)
 
                 for position in data.get('results'):
-                    if "data" in position:
-                        position_data = position.get("data", {})
+                    if "lambda" in position:
+                        position_data = position.get("lambda", {})
                         x = position_data.get("Lat")
                         y = position_data.get("Lng")
 

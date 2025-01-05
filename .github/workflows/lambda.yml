@@ -1,0 +1,46 @@
+
+on:
+  push:
+    branches:
+      - develop
+jobs:
+  build:
+    runs-on: ubuntu-latest
+  steps:
+    # Checkout the code from the repository
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # Set up Python environment
+    - name: Set up Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.11'  # or the version you use in Lambda
+
+    # Install dependencies
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements-lambda.txt
+
+    # Package Lambda function and dependencies into a ZIP file
+    - name: Package Lambda function
+      run: |
+        mkdir package
+        cp -r * package/  # Copy your function code to the 'package' directory
+        cd package
+        zip -r9 ../function.zip .  # Create a zip file of your function
+
+    # Deploy the ZIP file to AWS Lambda
+    - name: Deploy to AWS Lambda
+      uses: appleboy/ssh-action@v0.1.0  # Use an action to upload to Lambda (this is for SSH upload, Lambda can also be done via AWS CLI)
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_REGION: ${{ secrets.AWS_REGION }}
+        LAMBDA_FUNCTION_NAME: ${{ secrets.LAMBDA_FUNCTION_NAME }}
+      run: |
+        aws lambda update-function-code --function-name $LAMBDA_FUNCTION_NAME --zip-file fileb://function.zip --region $AWS_REGION
+
+    - name: Clean up
+      run: rm -rf function.zip  # Remove the zip file after deployment

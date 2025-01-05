@@ -1,11 +1,7 @@
-import json
 import logging
-import os
+from storage_handler import StorageHandler
 from typing import Optional, Dict
 import requests
-from werkzeug.utils import secure_filename
-
-import config
 
 
 def check_connection() -> Dict[bool, str]:
@@ -29,40 +25,20 @@ def check_connection() -> Dict[bool, str]:
         return {False: f"Request error occurred: {err}"}
 
 
-def download_turtles_info() -> Dict[bool, str]:
-    """
-    Download all information about turtles (name, species, ect.)
-    :return: dictionary with key True and empty value if successfully connected,
-     otherwise False as key and error name as value.
-    """
-    if not check_connection():
-        logging.warning("No internet connection")
-        return {False: "No internet connection"}
+def download_turtles_info(storage_handler: StorageHandler) -> Dict[bool, str]:
     url = "https://stc.mapotic.com/api/v1/poi/"
     try:
         response = requests.get(url, timeout=5)
         response.raise_for_status()
-        data = response.json()
-        os.makedirs("data/raw", exist_ok=True)
-        with open(os.path.join(f"{config.DevelopmentConfig.STORAGE_PATH}/json", f'turtles_info.json'), "w") as f:
-            json.dump(data, f)
+        storage_handler.save_file("json/turtles_info.json", response.text)
         return {True: ""}
-
-    except requests.exceptions.HTTPError as err:
-        logging.error(f"HTTP error occurred: {err}")
-        return {False: f"HTTP error occurred: {err}"}
-    except requests.Timeout as err:
-        logging.error(f"Timeout error occurred: {err}")
-        return {False: f"Timeout error occurred: {err}"}
-    except requests.exceptions.RequestException as err:
-        logging.error(f"Request error occurred: {err}")
-        return {False: f"Request error occurred: {err}"}
-    except ValueError:
-        logging.error("Failed to decode JSON from response")
-        return {False: "Failed to decode JSON from response"}
+    except Exception as err:
+        logging.error(f"Failed to download turtle info: {err}")
+        return {False: str(err)}
 
 
-def download_turtles_positions(turtle_id: int, positions_quantity: Optional[int] = 10000) -> Dict[bool, str]:
+def download_turtles_positions(turtle_id: int, storage_handler: StorageHandler,
+                               positions_quantity: Optional[int] = 10000, ) -> Dict[bool, str]:
     """
     Download all position and movement related information for given turtle
     :param turtle_id: ID number of turtle
@@ -77,9 +53,7 @@ def download_turtles_positions(turtle_id: int, positions_quantity: Optional[int]
     try:
         response = requests.get(url, timeout=5)
         response.raise_for_status()
-        data = response.json()
-        with open(os.path.join(f"{config.DevelopmentConfig.STORAGE_PATH}/json", f'turtles{turtle_id}_positions.json'), "w") as f:
-            json.dump(data, f)
+        storage_handler.save_file(f'turtles{turtle_id}_positions.json', response.text)
         return {True: ""}
 
     except requests.exceptions.HTTPError as err:
@@ -96,7 +70,7 @@ def download_turtles_positions(turtle_id: int, positions_quantity: Optional[int]
         return {False: "Failed to decode JSON from response"}
 
 
-def download_image(image_url: str, turtle_id: int) -> Dict[bool, str]:
+def download_image(image_url: str, turtle_id: int, storage_handler: StorageHandler) -> Dict[bool, str]:
     """
     Download an image from a URL and save it as a PNG file in the configured folder.
 
@@ -108,14 +82,8 @@ def download_image(image_url: str, turtle_id: int) -> Dict[bool, str]:
         response = requests.get(image_url, stream=True)
         response.raise_for_status()  # Ensure the request was successful
 
-        # Define the save path with .png extension
-        save_path = os.path.join(f"{config.DevelopmentConfig.STORAGE_PATH}/photos", f'turtle_{turtle_id}.png')
+        storage_handler.save_photo(f'turtle_{turtle_id}.png', response)
 
-        # Save the image
-        with open(save_path, "wb") as img_file:
-            for chunk in response.iter_content(chunk_size=8192):
-                img_file.write(chunk)
-
-        return {True: f"Image saved as {save_path}"}
+        return {True: ""}
     except requests.exceptions.RequestException as e:
         return {False: f"Error downloading image: {e}"}
