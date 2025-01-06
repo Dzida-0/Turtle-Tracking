@@ -30,6 +30,8 @@ jobs:
     - name: Zip the code
       run: |
         echo "ziping"
+        ls -al
+
         zip -r function.zip \ 
         .env \
         lambda/lambda_function.py \
