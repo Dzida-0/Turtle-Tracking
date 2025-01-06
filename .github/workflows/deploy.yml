@@ -34,7 +34,7 @@ jobs:
     - name: Zip the code
       run:
         cd lambda
-        zip -r ../function.zip. \
+        zip -r ../function.zip.
         cd..
 
     # Step 5: Configure AWS credentials
