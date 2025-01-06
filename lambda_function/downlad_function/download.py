@@ -1,5 +1,5 @@
 import logging
-from storage_handler import StorageHandler
+from .storage_handler import StorageHandler
 from typing import Optional, Dict
 import requests
 

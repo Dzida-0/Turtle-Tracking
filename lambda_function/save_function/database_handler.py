@@ -58,3 +58,26 @@ class DatabaseHandler:
         """Rollback any uncommitted transaction."""
         if self.conn:
             self.conn.rollback()
+
+    def create_basic_user(self):
+        self.execute_query("""
+            CREATE TABLE IF NOT EXISTS turtle (
+                id TEXT PRIMARY KEY,
+                name TEXT,
+                last_position TEXT,
+                is_active TEXT,
+                turtle_sex TEXT,
+                turtle_age TEXT,
+                length REAL,
+                length_type TEXT,
+                width REAL,
+                width_type TEXT,
+                project_name TEXT,
+                biography TEXT,
+                description TEXT,
+                photo TEXT,
+                distance_from_last FLOAT,
+                avg_speed_from_last FLOAT
+                
+            )
+        """)

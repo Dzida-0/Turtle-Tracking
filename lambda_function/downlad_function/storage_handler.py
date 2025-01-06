@@ -20,7 +20,7 @@ class StorageHandler:
         Save a file to local storage or S3.
         """
         if self.s3_bucket:
-            # lambda
+            # lambda_old
             try:
                 self.s3_client.put_object(Bucket=self.s3_bucket, Key=file_path, Body=content)
             except ClientError as e:
@@ -57,7 +57,7 @@ class StorageHandler:
                 Save a file to local storage or S3.
                 """
         if self.s3_bucket:
-            # lambda
+            # lambda_old
             try:
                 self.s3_client.put_object(Bucket=self.s3_bucket, Key="/photos/"+file_path, Body=content)
             except ClientError as e:
@@ -70,7 +70,7 @@ class StorageHandler:
                 for chunk in content.iter_content(chunk_size=8192):
                     f.write(chunk)
 
-    def photo_exists(self, file_path):
+    def file_exists(self, file_path):
         """
         Check if a photo exists in local storage or S3.
 
@@ -80,7 +80,7 @@ class StorageHandler:
         if self.s3_bucket:
             # S3 mode
             try:
-                self.s3_client.head_object(Bucket=self.s3_bucket, Key="/photos/"+file_path)
+                self.s3_client.head_object(Bucket=self.s3_bucket, Key=file_path)
                 return True
             except ClientError as e:
                 if e.response['Error']['Code'] == "404":
@@ -89,4 +89,4 @@ class StorageHandler:
                 raise
         else:
             # Local mode
-            return os.path.exists(self.local_path+"/photos/"+file_path)
+            return os.path.exists(self.local_path+"/"+file_path)

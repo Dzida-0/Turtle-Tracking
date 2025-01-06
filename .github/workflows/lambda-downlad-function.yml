@@ -1,4 +1,4 @@
-name: Deploy AWS Lambda
+name: Deploy AWS Lambda - download
 
 on:
   push:
@@ -24,19 +24,16 @@ jobs:
     - name: Install dependencies
       run: |
         echo "Installing dependencies"
-        mkdir lambda_build
-        pip install -r requirements-lambda.txt -t lambda_build
-        cp -r lambda/* lambda_build/
+        cd lambda_function
+        mkdir lambda_build_download
+        pip install -r requirements-lambda.txt -t lambda_build_download
+        cp -r download_function/* lambda_build_download/
 
-    # Step 4: List the contents of lambda_build (debugging step)
-    - name: List contents of lambda_build
-      run: |
-        ls -al lambda_build
 
     # Step 5: Zip the code for deployment
     - name: Zip the code
       run: |
-        cd lambda_build
+        cd lambda_build_download
         zip -r ../function.zip .
         cd ..
 
@@ -44,11 +41,11 @@ jobs:
     - name: Set environment variables for Lambda
       run: |
         # Prepare environment variables for Lambda from GitHub Secrets
-        ENV_VARS="S3_BUCKET_NAME=${{ secrets.S3_BUCKET_NAME }},RDS_HOST=${{ secrets.RDS_HOST }},RDS_USER=${{ secrets.RDS_USER }},RDS_PASSWORD=${{ secrets.RDS_PASSWORD }},RDS_DATABASE=${{ secrets.RDS_DATABASE }}"
+        ENV_VARS="S3_BUCKET_NAME=${{ secrets.S3_BUCKET_NAME }}"
 
         # Update Lambda function with the environment variables
         aws lambda update-function-configuration \
-          --function-name test \
+          --function-name turtle-tracking-download \
           --region ${{ secrets.AWS_DEFAULT_REGION }} \
           --environment "Variables={$ENV_VARS}"
 
@@ -70,5 +67,5 @@ jobs:
       run: |
         echo "push"
         aws lambda update-function-code \
-          --function-name test \
+          --function-name turtle-tracking-download \
           --zip-file fileb://function.zip

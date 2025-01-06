@@ -89,13 +89,15 @@ def parse_turtle_info(database_handler, storage_handler):
     :param storage_handler: Instance of StorageHandler to interact with the storage system.
     :return: Dictionary mapping turtle IDs to their picture URLs.
     """
-    ret = {}
+    ret = []
 
     try:
         # Load turtle info JSON from storage
-        turtles_info_path = "json/turtles_info.json"
-        content = storage_handler.load_file(turtles_info_path)
+        content = storage_handler.load_file("json/turtles_info.json")
         data = json.loads(content)
+
+        photos = json.loads(storage_handler.load_file("json/config_photos.json"))
+
         # Ensure the turtles table exists
         database_handler.execute_query("""
             CREATE TABLE IF NOT EXISTS turtle (
@@ -111,7 +113,11 @@ def parse_turtle_info(database_handler, storage_handler):
                 width_type TEXT,
                 project_name TEXT,
                 biography TEXT,
-                description TEXT
+                description TEXT,
+                photo TEXT,
+                distance_from_last FLOAT,
+                avg_speed_from_last FLOAT
+                
             )
         """)
 
@@ -137,6 +143,7 @@ def parse_turtle_info(database_handler, storage_handler):
             project_name = None
             biography = None
             description = None
+            photo = True
 
             for attribute in turtle.get("attributes", []):
                 if attribute.get("code", "") == "is_active":
@@ -152,15 +159,12 @@ def parse_turtle_info(database_handler, storage_handler):
                 elif attribute.get("code", "") == "Biography":
                     biography = attribute.get("value", "")
 
-            # Safely extract image URL
-            image = turtle.get("image")
-            if image and isinstance(image, dict):
-                urls = image.get("urls", {})
-                picture_url = urls.get("origin", None)
-            else:
-                picture_url = None
+            distance_from_last = turtle.get('distance_from_last_loc',None)
+            avg_speed_from_last = turtle.get('avg_speed_from_last_loc', None)
 
-            ret[turtle_id] = picture_url
+            if str(turtle_id) in photos.keys():
+                photo=False
+            ret.append(turtle_id)
 
             # Check if the turtle already exists
             existing_turtle = database_handler.fetch_one("SELECT id FROM turtle WHERE id = ?", (turtle_id,))
@@ -171,12 +175,12 @@ def parse_turtle_info(database_handler, storage_handler):
                     UPDATE turtle
                     SET name = ?, last_position = ?, is_active = ?, turtle_sex = ?,
                         turtle_age = ?, length = ?, length_type = ?, width = ?,
-                        width_type = ?, project_name = ?, biography = ?, description = ?
+                        width_type = ?, project_name = ?, biography = ?, description = ?,photo=?,distance_from_last=?,avg_speed_from_last=?
                     WHERE id = ?
                 """, (
                     name, last_position, is_active, turtle_sex,
                     turtle_age, length, length_type, width,
-                    width_type, project_name, biography, description, turtle_id
+                    width_type, project_name, biography, description,photo,distance_from_last, avg_speed_from_last,turtle_id
                 ))
             else:
                 # Insert new turtle
@@ -184,12 +188,12 @@ def parse_turtle_info(database_handler, storage_handler):
                     INSERT INTO turtle (
                         id, name, last_position, is_active, turtle_sex,
                         turtle_age, length, length_type, width, width_type,
-                        project_name, biography, description
-                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                        project_name, biography, description, photo,distance_from_last,avg_speed_from_last
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?)
                 """, (
                     turtle_id, name, last_position, is_active, turtle_sex,
                     turtle_age, length, length_type, width, width_type,
-                    project_name, biography, description
+                    project_name, biography, description,photo,distance_from_last,avg_speed_from_last
                 ))
 
         logging.info("Turtle information parsed and saved successfully.")
