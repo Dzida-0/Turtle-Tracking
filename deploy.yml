@@ -28,7 +28,7 @@ jobs:
       run: |
         mkdir package
           cp -r lambda package/  # Copy the entire lambda folder
-          cp .env package/    # Copy the .env file from the outside folder
+          cp ../.env package/    # Copy the .env file from the outside folder
           cd package
           zip -r9 ../function.zip .  # Create a zip file of the package
 
