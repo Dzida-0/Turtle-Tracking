@@ -23,11 +23,12 @@ jobs:
     # Step 3: Install dependencies
     - name: Install dependencies
       run: |
+        ls -al
         echo "Installing dependencies"
         mkdir lambda_build
         pip install -r requirements-lambda.txt -t lambda_build
         cp -r lambda/* lambda_build/
-        cp .env lambda_build/
+        if [ -f .env ]; then cp .env lambda_build/; fi
 
     # Step 4: Zip the code for deployment
     - name: Zip the code
