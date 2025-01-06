@@ -32,7 +32,7 @@ jobs:
 
     # Step 4: Zip the code for deployment
     - name: Zip the code
-      run:
+      run: |
         cd lambda
         zip -r ../function.zip.
         cd ..
