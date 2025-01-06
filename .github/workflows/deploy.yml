@@ -1,10 +1,3 @@
-name: Deploy AWS Lambda
-
-on:
-  push:
-    branches:
-      - develop  # Trigger deployment when changes are pushed to the 'main' branch
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -23,14 +16,12 @@ jobs:
     # Step 3: Install dependencies
     - name: Install dependencies
       run: |
-        ls -al
         echo "Installing dependencies"
         mkdir lambda_build
         pip install -r requirements-lambda.txt -t lambda_build
         cp -r lambda/* lambda_build/
-        if [ -f .env ]; then cp .env lambda_build/; fi
 
-   # Step 4: Verify the contents of the lambda_build directory
+    # Step 4: List the contents of lambda_build (debugging step)
     - name: List contents of lambda_build
       run: |
         ls -al lambda_build
@@ -38,13 +29,11 @@ jobs:
     # Step 5: Zip the code for deployment
     - name: Zip the code
       run: |
-        # Change to the lambda_build directory
         cd lambda_build
-        # Zip everything inside lambda_build into the parent directory
         zip -r ../function.zip .
         cd ..
 
-  # Step 6: Set environment variables for Lambda from GitHub Secrets
+    # Step 6: Set environment variables for Lambda from GitHub Secrets
     - name: Set environment variables for Lambda
       run: |
         # Prepare environment variables for Lambda from GitHub Secrets
@@ -56,16 +45,20 @@ jobs:
           --region ${{ secrets.AWS_DEFAULT_REGION }} \
           --environment "Variables={$ENV_VARS}"
 
-
-    # Step 5: Configure AWS credentials
+    # Step 7: Configure AWS credentials
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v3
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ${{ secrets.AWS_DEFAULT_REGION }}  # Change to your Lambda's region
+        aws-region: ${{ secrets.AWS_DEFAULT_REGION }}  # Ensure region is provided
 
-    # Step 6: Deploy to AWS Lambda
+    # Debug Step: Check AWS credentials (optional)
+    - name: Check AWS Credentials
+      run: |
+        aws sts get-caller-identity
+
+    # Step 8: Deploy to AWS Lambda
     - name: Deploy to AWS Lambda
       run: |
         echo "push"
