@@ -1,4 +1,8 @@
-from flask import render_template, Blueprint, abort, request, jsonify, session, send_from_directory
+import logging
+import os
+
+import boto3
+from flask import render_template, Blueprint, abort, request, jsonify, session, send_from_directory, url_for
 from flask_login import current_user, user_logged_out, user_logged_in
 
 from .main import create_interactive_map
@@ -40,12 +44,41 @@ def turtle(turtle_id):
     # Fetching the turtle with the given id
     if not turtle:
         abort(404)
-    return render_template('turtle.html', turtle=turtle, positions =positions)
+
+    flask_config = os.getenv('FLASK_CONFIG', 'development')
+
+    # Default picture
+    picture_url = None
+
+    if flask_config == 'development':
+        # Check local storage for turtle_{turtle_id}.png
+        picture_path = os.path.join('/storage', 'photos', f'turtle_{turtle_id}.png')
+        if os.path.exists(picture_path):
+            picture_url = os.path.join('/storage', 'photos', f'turtle_{turtle_id}.png')
+    elif flask_config == 'production':
+        # Check S3 bucket for turtle_{turtle_id}.png
+        s3_bucket = 'your-s3-bucket-name'
+        s3_client = boto3.client('s3')
+
+        # Check if the file exists in the S3 bucket
+        try:
+            s3_client.head_object(Bucket=s3_bucket, Key=f'photos/turtle_{turtle_id}.png')
+            picture_url = f'https://{s3_bucket}.s3.amazonaws.com/photos/turtle_{turtle_id}.png'
+        except s3_client.exceptions.ClientError:
+            # File does not exist, use default picture
+            pass
+
+    # Fall back to a default picture
+    if not picture_url:
+        picture_url = url_for('static', filename='pictures/turtle.png')
+
+    return render_template('turtle.html', turtle=turtle, positions=positions, picture_url=picture_url)
 
 
 @turtle_bp.route('/update_favorite', methods=['POST'])
 def update_favorite():
     data = request.get_json()
+    logging.warning(data)
     turtle_id = data.get('turtle_id')
     is_favorite = data.get('favorite')
 

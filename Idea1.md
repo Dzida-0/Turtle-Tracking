@@ -1,57 +1,53 @@
-# Turtle-Tracking
-Python based project for tracking turtles with gps. It has interface , database, tracking 
-algorithms and neural network. 
+ <div class="turtle-top-container">
+        <!-- Left Section with Name -->
+          
+        </div>
+        <div class="turtle-info">
+            <h1>{{ turtle.name }}</h1>
+            <table>
+                <tr>
+                    <th>Active</th>
+                    <td>{{ 'Yes' if turtle.is_active else 'No' }}</td>
+                </tr>
+                <tr>
+                    <th>Sex</th>
+                    <td>{{ turtle.turtle_sex }}</td>
+                </tr>
+                <tr>
+                    <th>Age</th>
+                    <td>{{ turtle.turtle_age }}</td>
+                </tr>
+                <tr>
+                    <th>Length</th>
+                    <td>{{ turtle.length }} cm</td>
+                </tr>
+                <tr>
+                    <th>Length Type</th>
+                    <td>{{ turtle.length_type }}</td>
+                </tr>
+                <tr>
+                    <th>Width</th>
+                    <td>{{ turtle.width }} cm</td>
+                </tr>
+                <tr>
+                    <th>Width Type</th>
+                    <td>{{ turtle.width_type }}</td>
+                </tr>
+                <tr>
+                    <th>Project Name</th>
+                    <td>{{ turtle.project_name }}</td>
+                </tr>
 
-## Technical data
-- Project will be using git hub
-- project will be using cl
+            </table>
+        </div>
 
-## V 1.0
-### Data gathering (request)
-- downloading turtle data
-- updating turtle position data
-- parsing turtle data
-### Database (MySql)
-- saving turtle data to database
-- updating position data
-- saving app users and favorite turtles 
-### Graphs preparing
-- map with turtles path corrected to not cut land
-- grouping turtles by features
-### Visualisation 
-#### page 1: Welcome page
-- buttons to oder pages\
-if no favorite then 10 random
-- table with favorites turtles
-- map of favorite turtles
-- random statistic eg. turtle "xxx" move most distance
-#### page 2: All available turtles
-- list of all turtles 
-- image 
-- name 
-- description 
-- favorite button
-#### page 3: Single turtle page
-- all data about one turtle
-#### page 4: logging / register
-- logging for account
-- creating account
+        <!-- Right Section with Picture -->
 
-## V 2.0
-### Data gathering 
--weather data
-### Neural Network
--predicting turtle movement
+    </div>
 
-## Ideas for next versions:
-- Ships movement impact
-- betting on turtles
-- deployment 
+    
+    <div class="turtle-bottom-container">
+   
 
-psycopg2-binary
-gunicorn==20.1.0
-pytest==7.1.2
-black==22.3.0
-Flask==2.1.3
-Werkzeug==2.3.7
-
+  
+    </div>

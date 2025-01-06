@@ -4,14 +4,31 @@ $top-bar-text-size: 1.2rem;
 .navbar {
   background-color: var(--primary-color);
 
+  .menu-divider{
+    padding: 0;
+    margin: 0;
+
+
+  }
+
+
+/* Styling for the color menu */
+.color-menu-li {
+   /* Pushes the color menu to the right */
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+
   /* Vertical layout */
-  ul {
+  .main-menu{
     padding: 0;
     margin: 0;
     list-style: none;
     display: flex;
     align-items: center;
     justify-content: space-around;
+    width: 90%;
 
     /* Menu */
     li {
@@ -77,8 +94,10 @@ $top-bar-text-size: 1.2rem;
   }
 
   /* Color menu */
+
+
   .color-menu {
-    position: relative;
+    position: center;
     width: 15px;
     height: 15px;
   }

@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
-    <link rel="stylesheet" href="{{url_for('static',filename='styles.css')}}"/>
+    <link rel="stylesheet" href="{{url_for('static',filename='css/styles.css')}}"/>
 </head>
-<body>
+<body class ="login">
     <h2>Login</h2>
+    <div class="login-box">
     <form method="POST"  action="{{ url_for('auth.login') }}">
         {{ form.hidden_tag() }}
         <div class="form-group">
@@ -17,5 +18,6 @@
         </div>
         {{ form.submit(class="btn btn-primary") }}
     </form>
+    </div>
 </body>
 </html>

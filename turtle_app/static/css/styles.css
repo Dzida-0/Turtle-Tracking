@@ -16,28 +16,38 @@
   --primary-color-dark: #26857b;
 }
 
-.light-theme {
+.theme-1 {
   --primary-color: #3498db;
   --secondary-color: #2ecc71;
   --background-color: #ffffff;
   --text-color: #000000;
+  /**/
+  --primary-color-dark: #3469db;
 }
 
-.dark-theme {
+.theme-2 {
   --primary-color: #1abc9c;
   --secondary-color: #ffcc02;
   --background-color: #2c3e50;
   --text-color: #ecf0f1;
-}
-
-.theme-1 {
-  --background-color: #ecf0f1;
-  --navbar-color: #ecf0f1;
-  --navbar-color-hover: #ecf0f1;
+  /**/
+  --primary-color-dark: #26857b;
 }
 
 /* for color themes */
 /* Turtle list*/
+.toggle-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+.toggle-buttons button {
+  padding: 20px 0 20px 0;
+}
+.toggle-buttons button span {
+  color: var(--text-color);
+}
+
 .turtle-list {
   display: flex;
   flex-direction: column;
@@ -51,13 +61,13 @@
   align-items: center;
   background-color: var(--primary-color);
   padding: 10px;
-  border: 2px solid #ddd;
+  border: 2px solid var(--text-color);
   border-radius: 10px;
   transition: opacity 0.3s ease;
   /* hover over */
 }
-.turtle-list .turtle-item:hover + .turtle-info {
-  background-color: var(--secondary-color);
+.turtle-list .turtle-item:hover {
+  background-color: var(--primary-color-dark);
 }
 .turtle-list .turtle-name {
   display: flex;
@@ -68,7 +78,7 @@
   background-color: var(--primary-color);
 }
 .turtle-list .turtle-info:hover {
-  background-color: var(--secondary-color);
+  background-color: var(--primary-color-dark);
 }
 .turtle-list .turtle-info a {
   text-decoration: none;
@@ -83,7 +93,7 @@
   border-radius: 50%;
   margin-right: 15px;
   object-fit: cover;
-  border: 2px solid #ddd;
+  border: 2px solid var(--text-color);
 }
 .turtle-list .favorite-label {
   display: inline-block;
@@ -105,36 +115,49 @@
 }
 
 /* Top bar */
-/* Turtle list*/
 .navbar {
   background-color: var(--primary-color);
+  /* Styling for the color menu */
   /* Vertical layout */
-  /* Menu */
   /* Welcome text */
   /* Favorites menu */
   /* Color menu */
 }
-.navbar ul {
+.navbar .menu-divider {
   padding: 0;
   margin: 0;
   list-style: none;
   display: flex;
-  justify-content: space-around;
 }
-.navbar li {
+.navbar .color-menu-li {
+  margin-left: auto; /* Pushes the color menu to the right */
   position: relative;
-  padding: 10px 30px 10px 20px;
+  width: 30px;
 }
-.navbar li:hover {
+.navbar .main-menu {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  /* Menu */
+}
+.navbar .main-menu li {
+  position: relative;
+  padding: 10px 20px 10px 20px;
   background-color: var(--primary-color);
 }
-.navbar li a {
+.navbar .main-menu li a {
   color: var(--secondary-color);
   text-decoration: none;
   font-size: 1.2rem;
 }
-.navbar li a:hover {
+.navbar .main-menu li a:hover {
   text-decoration: underline;
+}
+.navbar .main-menu .menu-li:hover {
+  background-color: var(--primary-color-dark);
 }
 .navbar span {
   color: var(--secondary-color);
@@ -145,7 +168,7 @@
   position: absolute;
   top: 100%;
   left: 0;
-  background-color: #444;
+  background-color: var(--primary-color);
   list-style: none;
   margin: 0;
   padding: 0;
@@ -154,19 +177,25 @@
   z-index: 1000;
 }
 .navbar .dropdown-menu-turtles a {
-  color: white;
+  color: var(--text-color);
   padding: 10px 20px;
   display: block;
   white-space: nowrap;
 }
 .navbar .turtle-list-nav:hover + .dropdown-menu-turtles {
-  display: block; /* Show on hover */
+  display: block;
 }
 .navbar .dropdown-menu-turtles:hover {
   display: block;
 }
+.navbar .dropdown-menu-turtles button {
+  color: white;
+  padding: 10px 20px;
+  display: block;
+  white-space: nowrap;
+}
 .navbar .color-menu {
-  position: relative;
+  position: center;
   width: 15px;
   height: 15px;
 }
@@ -175,14 +204,13 @@
   position: absolute;
   top: 100%;
   right: 0;
-  background-color: #444;
   list-style: none;
   margin: 0;
   padding: 0;
   border-radius: 5px;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   z-index: 1000;
-  /* Use theme variables for the color boxes */
+  /* Theme color boxes */
 }
 .navbar .dropdown-color-menu .color-box .color-palette {
   display: flex;
@@ -194,60 +222,46 @@
   border-radius: 5px;
   border: 1px solid #000000;
 }
-.navbar .dropdown-color-menu .light-theme .b1 {
+.navbar .dropdown-color-menu li:hover {
+  background-color: var(--primary-color-dark);
+}
+.navbar .dropdown-color-menu .theme-1 .b1 {
   background-color: var(--primary-color);
 }
-.navbar .dropdown-color-menu .light-theme .b2 {
+.navbar .dropdown-color-menu .theme-1 .b2 {
   background-color: var(--secondary-color);
 }
-.navbar .dropdown-color-menu .light-theme .b3 {
+.navbar .dropdown-color-menu .theme-1 .b3 {
   background-color: var(--background-color);
 }
-.navbar .dropdown-color-menu .light-theme .b4 {
+.navbar .dropdown-color-menu .theme-1 .b4 {
   background-color: var(--text-color);
 }
-.navbar .dropdown-color-menu .dark-theme {
-  /* Background color for dark theme */
-}
-.navbar .dropdown-color-menu .dark-theme .b1 {
+.navbar .dropdown-color-menu .theme-2 .b1 {
   background-color: var(--primary-color);
 }
-.navbar .dropdown-color-menu .dark-theme .b2 {
+.navbar .dropdown-color-menu .theme-2 .b2 {
   background-color: var(--secondary-color);
 }
-.navbar .dropdown-color-menu .dark-theme .b3 {
+.navbar .dropdown-color-menu .theme-2 .b3 {
   background-color: var(--background-color);
 }
-.navbar .dropdown-color-menu .dark-theme .b4 {
+.navbar .dropdown-color-menu .theme-2 .b4 {
   background-color: var(--text-color);
-}
-.navbar .dropdown-menu-turtles button {
-  color: white;
-  padding: 10px 20px;
-  display: block;
-  white-space: nowrap;
 }
 .navbar .color-menu:hover > .dropdown-color-menu,
 .navbar .dropdown-color-menu:hover {
-  display: block; /* Show the dropdown on hover */
+  display: block;
 }
 .navbar .color-menu-li:hover > .dropdown-color-menu {
   display: block;
 }
 
-/* Color */
 /*$background-color: #FBF6E9;*/
 /* Top bar */
 /*$top-bar-color: rgba(136, 220, 239, 0.78);*/
 /*$top-bar-text-color: #0019be;*/
 /* Turtle list*/
-body {
-  background-color: var(--background-color);
-  width: auto;
-  height: auto;
-  margin: 0;
-}
-
 /* Turtle page */
 .toggle-buttons {
   display: flex;
@@ -330,37 +344,100 @@ body {
   width: 400px;
 }
 
+body {
+  background-color: var(--background-color);
+  width: auto;
+  height: auto;
+  margin: 0;
+}
+
+.login {
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  align-items: center;
+  /* Title styles */
+  /* Form group styling */
+  /* Input and button styling */
+  /* Submit button styling */
+}
+.login .login-box {
+  text-align: center;
+  align-items: center;
+}
+.login h2 {
+  color: #2c3e50;
+  margin-bottom: 20px;
+  font-size: 2rem;
+}
+.login .form-group {
+  margin-bottom: 15px;
+}
+.login .form-control {
+  width: 100%;
+  padding: 12px;
+  font-size: 1.1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+.login .btn-primary {
+  background-color: #3498db;
+  color: white;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  width: 100%;
+  cursor: pointer;
+}
+.login .btn-primary:hover {
+  background-color: #2980b9;
+}
+
 /* Top bar */
 .navbar {
   background-color: var(--primary-color);
+  /* Styling for the color menu */
   /* Vertical layout */
   /* Welcome text */
   /* Favorites menu */
   /* Color menu */
 }
-.navbar ul {
+.navbar .menu-divider {
+  padding: 0;
+  margin: 0;
+}
+.navbar .color-menu-li {
+  /* Pushes the color menu to the right */
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+.navbar .main-menu {
   padding: 0;
   margin: 0;
   list-style: none;
   display: flex;
   align-items: center;
   justify-content: space-around;
+  width: 90%;
   /* Menu */
 }
-.navbar ul li {
+.navbar .main-menu li {
   position: relative;
   padding: 10px 20px 10px 20px;
   background-color: var(--primary-color);
 }
-.navbar ul li a {
+.navbar .main-menu li a {
   color: var(--secondary-color);
   text-decoration: none;
   font-size: 1.2rem;
 }
-.navbar ul li a:hover {
+.navbar .main-menu li a:hover {
   text-decoration: underline;
 }
-.navbar ul .menu-li:hover {
+.navbar .main-menu .menu-li:hover {
   background-color: var(--primary-color-dark);
 }
 .navbar span {
@@ -399,7 +476,7 @@ body {
   white-space: nowrap;
 }
 .navbar .color-menu {
-  position: relative;
+  position: center;
   width: 15px;
   height: 15px;
 }
@@ -532,10 +609,68 @@ body {
   width: 24px;
   height: 24px;
   display: inline-block;
-  background-image: url("../heart.png");
+  background-image: url("../pictures/heart.png");
   background-size: cover;
   transition: background 0.3s ease;
 }
 .turtle-list .favorite-label .favorite-checkbox:checked + .favorite-icon {
-  background-image: url("../heart_red.png");
+  background-image: url("../pictures/heart_red.png");
+}
+
+/* Turtle page */
+.turtle-container {
+  display: flex; /* Makes child elements sit side-by-side */
+  flex-wrap: nowrap; /* Prevents wrapping of elements */
+  width: 100%; /* Ensures the full width is utilized */
+  height: 100%; /* Adjusts height based on content */
+  margin: 0;
+  padding: 0;
+}
+
+/* Left Container */
+.left-turtle-container {
+  flex: 1; /* Takes 50% of the width */
+  max-width: 50%;
+  padding: 10px;
+  box-sizing: border-box; /* Includes padding in width calculation */
+}
+
+/* Right Container */
+.right-turtle-container {
+  flex: 1; /* Takes 50% of the width */
+  max-width: 50%;
+  padding: 10px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column; /* Stacks content vertically */
+  justify-content: center; /* Centers content vertically */
+  align-items: center; /* Centers content horizontally */
+}
+
+/* Map Section */
+.map-container {
+  width: 100%;
+  height: 100%;
+}
+
+.map-turtle {
+  width: 100%;
+  height: 400px; /* Adjust height as needed */
+  border: none;
+}
+
+/* Picture and Description */
+.turtle-picture-box {
+  text-align: center;
+}
+
+.turtle-picture {
+  width: 80%; /* Adjust to desired size */
+  max-width: 300px; /* Limit max size */
+  height: auto;
+  margin-bottom: 20px;
+}
+
+.turtle-description {
+  margin-top: 10px;
 }

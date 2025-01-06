@@ -9,52 +9,56 @@
     </head>
     <body>
         <nav class="navbar">
-            <ul>
-                <li class="menu-li"><a href="{{ url_for('main.index') }}">Home</a></li>
-                <li class="menu-li"><a class = "turtle-list-nav" href="{{ url_for('turtle.turtles') }}">Turtles</a>
-                     <ul class="dropdown-menu-turtles">
-                        {% for turtle in favorites %}
-                            <li><a href="{{ url_for('turtle.turtle', turtle_id=turtle.id) }}">{{ turtle.name }}</a></li>
+
+                    <ul class="main-menu">
+                        <li class="menu-li"><a href="{{ url_for('main.index') }}">Home</a></li>
+                        <li class="menu-li"><a class = "turtle-list-nav" href="{{ url_for('turtle.turtles') }}">Turtles</a>
+                             <ul class="dropdown-menu-turtles">
+                                {% for turtle in favorites %}
+                                    <li><a href="{{ url_for('turtle.turtle', turtle_id=turtle.id) }}">{{ turtle.name }}</a></li>
+                                {% else %}
+                                    <li><span>No favorites yet</span></li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+
+                        {% if current_user.is_authenticated %}
+                            <li><span>Welcome, {{ current_user.username }}</span></li>
+                            <li class="menu-li"><a href="{{ url_for('auth.logout') }}">Logout</a></li>
                         {% else %}
-                            <li><span>No favorites yet</span></li>
-                        {% endfor %}
-                    </ul>
-                </li>
+                             <li><span>Welcome, Guest</span></li>
+                            <li class="menu-li"><a href="{{ url_for('auth.login') }}">Login</a></li>
+                            <li class="menu-li"><a href="{{ url_for('auth.register') }}">Register</a></li>
+                        {% endif %}
 
-                {% if current_user.is_authenticated %}
-                    <li><span>Welcome, {{ current_user.username }}</span></li>
-                    <li class="menu-li"><a href="{{ url_for('auth.logout') }}">Logout</a></li>
-                {% else %}
-                     <li><span>Welcome, Guest</span></li>
-                    <li class="menu-li"><a href="{{ url_for('auth.login') }}">Login</a></li>
-                    <li class="menu-li"><a href="{{ url_for('auth.register') }}">Register</a></li>
-                {% endif %}
 
-                <li class="color-menu-li"> <img src="{{ url_for('static', filename='color-icon.png')}}" class="color-menu">
-                    <ul class="dropdown-color-menu">
-                        <li>
-                            <div class="color-box light-theme" onclick="switchTheme('theme-1')">
-                                <ul class="color-palette">
-                                    <li class="b1 b"></li>
-                                    <li class="b2 b"></li>
-                                    <li class="b3 b"></li>
-                                    <li class="b4 b"></li>
-                                </ul>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="color-box dark-theme" onclick="switchTheme('theme-2')">
-                                <ul class="color-palette">
-                                    <li class="b1 b"></li>
-                                    <li class="b2 b"></li>
-                                    <li class="b3 b"></li>
-                                    <li class="b4 b"></li>
-                                </ul>
-                            </div>
-                        </li>
                     </ul>
-                </li>
-            </ul>
+
+                <div class="color-menu-li"> <img src="{{ url_for('static', filename='pictures/color-icon.png')}}" class="color-menu">
+                        <ul class="dropdown-color-menu">
+                            <li>
+                                <div class="color-box light-theme" onclick="switchTheme('theme-1')">
+                                    <ul class="color-palette">
+                                        <li class="b1 b"></li>
+                                        <li class="b2 b"></li>
+                                        <li class="b3 b"></li>
+                                        <li class="b4 b"></li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="color-box dark-theme" onclick="switchTheme('theme-2')">
+                                    <ul class="color-palette">
+                                        <li class="b1 b"></li>
+                                        <li class="b2 b"></li>
+                                        <li class="b3 b"></li>
+                                        <li class="b4 b"></li>
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
         </nav>
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}

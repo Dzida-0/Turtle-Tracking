@@ -8,18 +8,18 @@
     <div class="toggle-buttons">
         <button id="toggle-inactive" class="btn">
             <span>Show Inactive Turtles</span>
-            <img src="{{url_for('static', filename='icon-on.png')}}" alt="Show inactive turtles" class="inactive-icon">
+            <img src="{{url_for('static', filename='pictures/icon-on.png')}}" alt="Show inactive turtles" class="inactive-icon">
         </button>
         <button id="toggle-no-description" class="btn">
             <span>Show Turtles with No Description</span>
-            <img src="{{url_for('static', filename='icon-off.png')}}" alt="Show turtles with no description" class="description-icon">
+            <img src="{{url_for('static', filename='pictures/icon-off.png')}}" alt="Show turtles with no description" class="description-icon">
         </button>
     </div>
         <div class="turtle-list">
         {% for turtle in turtles %}
 
             <div class="turtle-item {% if not turtle.is_active %}inactive{% endif %}">
-            <img src="{{ url_for('static', filename="turtle.jpg") }}" alt="{{ turtle.name }}" class="turtle-picture">
+            <img src="{{ url_for('static', filename='pictures/turtle.png') }}" alt="{{ turtle.name }}" class="turtle-picture">
             <div class="turtle-info">
                 <div class = "turtle-name">
                     <a href="{{ url_for('turtle.turtle', turtle_id=turtle.id) }}">

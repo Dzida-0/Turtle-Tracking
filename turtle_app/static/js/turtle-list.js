@@ -1,5 +1,5 @@
-const iconOnPath = '/static/icon-on.png';
-const iconOffPath = '/static/icon-off.png';
+const iconOnPath = '/static/pictures/icon-on.png';
+const iconOffPath = '/static/pictures/icon-off.png';
 
 const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
  document.querySelectorAll('.favorite-checkbox').forEach(checkbox => {

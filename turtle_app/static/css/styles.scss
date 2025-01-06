@@ -1,19 +1,9 @@
 @import "themes"; /* for color themes */
 @import "turtle-list";
 @import "top-bar";
+@import "turtle-page";
 
-/* Color */
-/*$background-color: #FBF6E9;*/
-/* Top bar */
-/*$top-bar-color: rgba(136, 220, 239, 0.78);*/
-/*$top-bar-text-color: #0019be;*/
-$top-bar-text-size: 1.2rem;
-/* Turtle list*/
-$list-margin: 20px;
-$list-gap: 20px;
-$borders-color: #ddd;
-$turtle-box-bg-color: #f9f9f9;
-$turtle-box-inside-padding: 10px;
+
 
 
 body {
@@ -23,87 +13,54 @@ body {
   margin: 0;
 }
 
+.login {
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  align-items: center;
+  /* Title styles */
+  .login-box{
+    text-align: center;
+  align-items: center;
+  }
+h2 {
+  color: #2c3e50;
+  margin-bottom: 20px;
+  font-size: 2rem;
+}
 
-/* Turtle page */
+/* Form group styling */
+.form-group {
+  margin-bottom: 15px;
+}
 
-.toggle-buttons {
-    display: flex;
-    justify-content: center; /* Center the buttons horizontally */
-    gap: 20px; /* Space between the buttons */
-    margin-top: 20px; /* Optional margin for spacing */
+/* Input and button styling */
+.form-control {
+  width: 100%;
+  padding: 12px;
+  font-size: 1.1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
 
-    .btn {
-        display: flex;
-        align-items: center; /* Align text and images vertically */
-        gap: 10px; /* Space between the image and text */
-        padding: 10px 20px; /* Padding around the button */
-        background: none; /* Remove default button background */
-        border: none; /* Remove default button border */
-        cursor: pointer;
+/* Submit button styling */
+.btn-primary {
+  background-color: #3498db;
+  color: white;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  width: 100%;
+  cursor: pointer;
+}
 
-        img {
-            width: 30px; /* Set the size of the images */
-            height: 30px;
-        }
-
-        span {
-            font-size: 16px;
-            color: #333; /* Text color */
-        }
-
-        &:hover span {
-            text-decoration: underline; /* Add underline on hover */
-        }
-    }
+.btn-primary:hover {
+  background-color: #2980b9;
+}
 
 
 }
 
-.turtle-top-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-}
-.turtle-bottom-container{
-  display: flex;
-   justify-content: space-between;
-  align-items: flex-start;
-}
-.turtle-info {
-    background-color: $turtle-box-bg-color;
-    flex: 1;
-    margin-right: 20px;
-        }
-.turtle-picture {
-    max-width: 50%;
-    max-height: 70%;
-    border-radius: 10px;
-    object-fit: cover;
-    margin: 10px;
-        }
-.turtle-picture-box {
-    object-fit: cover;
-    margin: 10px;
-        }
-.map-container {
-    margin: 20px;
-    width: 800px;
-    height: 800px;
 
-    .map-turtle {
-      width: 100%;
-      height: 100%;
-    }
-}
-
-
-.turtle-description{
-  margin: 20px;
-  padding: 20px;
-}
-.turtle-description h2{
-  width: 400px;
-}
-.turtle-description p{
-  width: 400px;
-}

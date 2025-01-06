@@ -1,0 +1,64 @@
+
+
+$list-margin: 20px;
+$list-gap: 20px;
+$borders-color: #ddd;
+$turtle-box-bg-color: #f9f9f9;
+$turtle-box-inside-padding: 10px;
+
+/* Turtle page */
+.turtle-container {
+display: flex; /* Makes child elements sit side-by-side */
+  flex-wrap: nowrap; /* Prevents wrapping of elements */
+  width: 100%; /* Ensures the full width is utilized */
+  height: 100%; /* Adjusts height based on content */
+  margin: 0;
+  padding: 0;
+}
+/* Left Container */
+.left-turtle-container {
+  flex: 1; /* Takes 50% of the width */
+  max-width: 50%;
+  padding: 10px;
+  box-sizing: border-box; /* Includes padding in width calculation */
+}
+
+/* Right Container */
+.right-turtle-container {
+  flex: 1; /* Takes 50% of the width */
+  max-width: 50%;
+  padding: 10px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column; /* Stacks content vertically */
+  justify-content: center; /* Centers content vertically */
+  align-items: center; /* Centers content horizontally */
+}
+
+/* Map Section */
+.map-container {
+  width: 100%;
+  height: 100%;
+}
+
+.map-turtle {
+  width: 100%;
+  height: 400px; /* Adjust height as needed */
+  border: none;
+}
+
+/* Picture and Description */
+.turtle-picture-box {
+  text-align: center;
+}
+
+.turtle-picture {
+  width: 80%; /* Adjust to desired size */
+  max-width: 300px; /* Limit max size */
+  height: auto;
+  margin-bottom: 20px;
+}
+
+.turtle-description {
+  margin-top: 10px;
+}

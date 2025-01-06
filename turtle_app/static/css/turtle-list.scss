@@ -75,12 +75,12 @@ $list-gap: 20px;
       width: 24px;
       height: 24px;
       display: inline-block;
-      background-image: url("../heart.png");
+      background-image: url("../pictures/heart.png");
       background-size: cover;
       transition: background 0.3s ease;
     }
     .favorite-checkbox:checked + .favorite-icon {
-      background-image: url('../heart_red.png');
+      background-image: url('../pictures/heart_red.png');
     }
   }
 }

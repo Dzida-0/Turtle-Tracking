@@ -66,6 +66,7 @@ def lambda_handler(event, context):
     # parse turtle pos
 
 
+
     db_handler.close()
 
 def retry(func, *args, max_retries=3, delay=2, **kwargs):
@@ -81,5 +82,4 @@ def retry(func, *args, max_retries=3, delay=2, **kwargs):
     return False
 
 
-if __name__ == '__main__':
-    lambda_handler(1, 2)
+

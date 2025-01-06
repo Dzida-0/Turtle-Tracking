@@ -23,13 +23,14 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements-lambda.txt
 
-    # Package Lambda function and dependencies into a ZIP file
-    - name: Package Lambda function
+    # Package specific files and dependencies into a ZIP file
+    - name: Package specific files for Lambda
       run: |
         mkdir package
-        cp -r * package/  # Copy your function code to the 'package' directory
-        cd package
-        zip -r9 ../function.zip .  # Create a zip file of your function
+          cp -r lambda package/  # Copy the entire lambda folder
+          cp .env package/    # Copy the .env file from the outside folder
+          cd package
+          zip -r9 ../function.zip .  # Create a zip file of the package
 
     # Deploy the ZIP file to AWS Lambda
     - name: Deploy to AWS Lambda
