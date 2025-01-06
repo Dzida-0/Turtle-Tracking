@@ -30,12 +30,20 @@ jobs:
         cp -r lambda/* lambda_build/
         if [ -f .env ]; then cp .env lambda_build/; fi
 
-    # Step 4: Zip the code for deployment
+   # Step 4: Verify the contents of the lambda_build directory
+    - name: List contents of lambda_build
+      run: |
+        ls -al lambda_build
+
+    # Step 5: Zip the code for deployment
     - name: Zip the code
       run: |
-        cd lambda
-        zip -r ../function.zip.
+        # Change to the lambda_build directory
+        cd lambda_build
+        # Zip everything inside lambda_build into the parent directory
+        zip -r ../function.zip .
         cd ..
+
 
     # Step 5: Configure AWS credentials
     - name: Configure AWS credentials
