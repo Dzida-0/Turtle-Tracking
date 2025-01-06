@@ -33,9 +33,9 @@ jobs:
     # Step 5: Zip the code for deployment
     - name: Zip the code
       run: |
-        cd lambda_build_download
+        cd lambda_function/lambda_build_download
         zip -r ../function.zip .
-        cd ..
+        cd ../..
 
     # Step 6: Set environment variables for Lambda from GitHub Secrets
     - name: Set environment variables for Lambda

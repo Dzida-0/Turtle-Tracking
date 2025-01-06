@@ -37,7 +37,7 @@ def lambda_handler(event, context):
     # parse info
     moves, picture = parse_turtle_info(storage_handler)
 
-    # downlad_function photos
+    # download_function photos
     to_remove = []
     for turtle_id, url in picture.items():
         if url:
