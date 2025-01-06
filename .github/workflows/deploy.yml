@@ -1,3 +1,10 @@
+name: Deploy AWS Lambda
+
+on:
+  push:
+    branches:
+      - develop  # Trigger deployment when changes are pushed to the 'main' branch
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
