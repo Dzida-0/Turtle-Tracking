@@ -28,8 +28,6 @@ jobs:
     # Step 4: Zip the code for deployment
     - name: Zip the code
       run: |
-        echo "Zipping files"
-        ls -al
         zip -r function.zip .env \
         lambda/lambda_function.py \
         lambda/parse.py \
@@ -43,7 +41,7 @@ jobs:
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: us-east-1  # Change to your Lambda's region
+        aws-region: ${{ secrets.AWS_DEFAULT_REGION }}  # Change to your Lambda's region
 
     # Step 6: Deploy to AWS Lambda
     - name: Deploy to AWS Lambda
