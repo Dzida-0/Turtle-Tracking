@@ -1,6 +1,5 @@
-
 on:
-  push:
+  commit:
     branches:
       - develop
 jobs:
