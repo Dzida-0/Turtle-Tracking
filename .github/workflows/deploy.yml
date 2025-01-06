@@ -44,6 +44,26 @@ jobs:
         zip -r ../function.zip .
         cd ..
 
+   # Step 6: Read the .env file and export variables for Lambda
+    - name: Set environment variables for Lambda
+      run: |
+        # Check if .env file exists
+        if [ -f .env ]; then
+          echo "Found .env file, exporting variables"
+          # Export the environment variables from .env
+          export $(cat .env | xargs)
+        else
+          echo ".env file not found"
+        fi
+
+        # Create a formatted string with the environment variables
+        ENV_VARS=$(cat .env | awk -F '=' '{print $1"="$2}' | tr '\n' ',' | sed 's/,$//')
+
+        # Update Lambda function with the environment variables
+        aws lambda update-function-configuration \
+          --function-name test \
+          --environment "Variables={$ENV_VARS}"
+
 
     # Step 5: Configure AWS credentials
     - name: Configure AWS credentials
