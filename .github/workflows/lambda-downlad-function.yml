@@ -34,7 +34,7 @@ jobs:
     - name: Zip the code
       run: |
         cd lambda_function/lambda_build_download
-        zip -r ../function.zip .
+        zip -r ../../function.zip .  
         cd ../..
 
    
