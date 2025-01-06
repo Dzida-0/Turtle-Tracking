@@ -23,22 +23,19 @@ jobs:
     # Step 3: Install dependencies
     - name: Install dependencies
       run: |
-        echo "install"
         pip install -r requirements-lambda.txt
 
     # Step 4: Zip the code for deployment
     - name: Zip the code
       run: |
-        echo "ziping"
+        echo "Zipping files"
         ls -al
-
-        zip -r function.zip \ 
-        .env \
+        zip -r function.zip .env \
         lambda/lambda_function.py \
         lambda/parse.py \
         lambda/download.py \
         lambda/database_handler.py \
-        lambda/storage_handler.py \
+        lambda/storage_handler.py
 
     # Step 5: Configure AWS credentials
     - name: Configure AWS credentials
