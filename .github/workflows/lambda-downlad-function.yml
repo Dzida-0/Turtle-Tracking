@@ -37,17 +37,7 @@ jobs:
         zip -r ../function.zip .
         cd ../..
 
-    # Step 6: Set environment variables for Lambda from GitHub Secrets
-    - name: Set environment variables for Lambda
-      run: |
-        # Prepare environment variables for Lambda from GitHub Secrets
-        ENV_VARS="S3_BUCKET_NAME=${{ secrets.S3_BUCKET_NAME }}"
-
-        # Update Lambda function with the environment variables
-        aws lambda update-function-configuration \
-          --function-name turtle-tracking-download \
-          --region ${{ secrets.AWS_DEFAULT_REGION }} \
-          --environment "Variables={$ENV_VARS}"
+   
 
     # Step 7: Configure AWS credentials
     - name: Configure AWS credentials
@@ -61,6 +51,18 @@ jobs:
     - name: Check AWS Credentials
       run: |
         aws sts get-caller-identity
+
+      # Step 6: Set environment variables for Lambda from GitHub Secrets
+    - name: Set environment variables for Lambda
+      run: |
+        # Prepare environment variables for Lambda from GitHub Secrets
+        ENV_VARS="S3_BUCKET_NAME=${{ secrets.S3_BUCKET_NAME }}"
+
+        # Update Lambda function with the environment variables
+        aws lambda update-function-configuration \
+          --function-name turtle-tracking-download \
+          --region ${{ secrets.AWS_DEFAULT_REGION }} \
+          --environment "Variables={$ENV_VARS}"
 
     # Step 8: Deploy to AWS Lambda
     - name: Deploy to AWS Lambda
