@@ -1,0 +1,52 @@
+name: Deploy AWS Lambda
+
+on:
+  push:
+    branches:
+      - develop  # Trigger deployment when changes are pushed to the 'main' branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step 1: Check out the code
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # Step 2: Set up Python
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.13' # Adjust to your Lambda runtime version
+
+    # Step 3: Install dependencies
+    - name: Install dependencies
+      run: |
+        pip install -r requirements-lambda.txt
+
+    # Step 4: Zip the code for deployment
+    - name: Zip the code
+      run: |
+        zip -r function.zip \ 
+        .env \
+        lambda/lambda_function.py \
+        lambda/parse.py \
+        lambda/download.py \
+        lambda/database_handler.py \
+        lambda/storage_handler.py \
+
+    # Step 5: Configure AWS credentials
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v3
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1  # Change to your Lambda's region
+
+    # Step 6: Deploy to AWS Lambda
+    - name: Deploy to AWS Lambda
+      run: |
+        aws lambda update-function-code \
+          --function-name test \
+          --zip-file fileb://function.zip
