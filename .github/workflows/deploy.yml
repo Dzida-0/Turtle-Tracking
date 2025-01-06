@@ -33,14 +33,12 @@ jobs:
     # Step 4: Zip the code for deployment
     - name: Zip the code
       run: |
-        cd lambda_build
-        zip -r ../function.zip .env \
+        zip -r ../function.zip \
         lambda/lambda_function.py \
         lambda/parse.py \
         lambda/download.py \
         lambda/database_handler.py \
         lambda/storage_handler.py
-        cd ..
 
     # Step 5: Configure AWS credentials
     - name: Configure AWS credentials
