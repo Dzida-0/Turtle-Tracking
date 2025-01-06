@@ -10,6 +10,10 @@ class StorageHandler:
         self.s3_bucket = s3_bucket
         if s3_bucket:
             self.s3_client = boto3.client('s3')
+        else:
+            for path in ["json",'maps','photos']:
+                os.makedirs(local_path+'/'+path, exist_ok=True)
+
 
     def save_file(self, file_path, content):
         """
@@ -24,7 +28,7 @@ class StorageHandler:
                 raise
         else:
             # local
-            with open(self.local_path+"/json/"+file_path, 'w',encoding="utf-8") as f:
+            with open(self.local_path+"/"+file_path, 'w',encoding="utf-8") as f:
                 f.write(content)
 
     def load_file(self, file_path):
@@ -42,7 +46,7 @@ class StorageHandler:
         else:
             # Local mode
             try:
-                with open(self.local_path+"/json/"+file_path, 'r',encoding="utf-8") as f:
+                with open(self.local_path+"/"+file_path, 'r',encoding="utf-8") as f:
                     return f.read()
             except OSError as e:
                 logging.error(f"Failed to load file locally: {e}")

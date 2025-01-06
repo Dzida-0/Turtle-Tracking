@@ -1,4 +1,5 @@
 import logging
+import os
 import sqlite3
 import pymysql
 
@@ -24,7 +25,8 @@ class DatabaseHandler:
             # Connect to SQLite
 
             db_path = self.db_uri
-            print(db_path)
+            os.makedirs(db_path, exist_ok=True)
+            db_path = os.path.join(db_path, "database.db")
             self.conn = sqlite3.connect(db_path)
         self.cursor = self.conn.cursor()
 

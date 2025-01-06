@@ -2,7 +2,7 @@ from dotenv import load_dotenv
 from database_handler import DatabaseHandler
 from storage_handler import StorageHandler
 from download import download_turtles_info, download_turtles_positions, download_image, check_connection
-from parse import parse_turtle_info
+from parse import parse_turtle_info,parse_turtle_positions
 import os
 import logging
 import time
@@ -65,6 +65,11 @@ def lambda_handler(event, context):
                 "body": "Failed to download lambda"
             }
     # parse turtle pos
+    for turtle_id in turtle_dict.keys():
+        parse_turtle_positions(turtle_id,db_handler,storage_handler)
+
+    # add test user
+
 
     db_handler.close()
 
@@ -80,3 +85,6 @@ def retry(func, *args, max_retries=3, delay=2, **kwargs):
         logger.warning(f"Attempt {attempt + 1} failed. {result.get(False)}")
         time.sleep(delay)
     return False
+
+if __name__ == '__main__':
+    lambda_handler(1,2)

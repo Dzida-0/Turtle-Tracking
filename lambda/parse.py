@@ -202,49 +202,41 @@ def parse_turtle_info(database_handler, storage_handler):
     finally:
         return ret
 
-def parse_turtle_positions(turtle_id: int,database_handler, storage_handler) -> None:
-    try:
-        # Open the JSON file
-        with open(os.path.join(f"{config.DevelopmentConfig.STORAGE_PATH}/json", f'turtles{turtle_id}_positions.json'), "r") as f:
-            data = json.load(f)
-            if "results" in data:
-                # Establish database connection
-                db_path = config.DevelopmentConfig.SQLALCHEMY_DATABASE_URI.replace("sqlite:///", "")
-                conn = sqlite3.connect(db_path)
-                cursor = conn.cursor()
 
-                # Ensure the turtle_positions table exists
-                cursor.execute("""
+def parse_turtle_positions(turtle_id: int,database_handler, storage_handler) -> None:
+
+    try:
+        # Load turtle info JSON from storage
+        turtles_info_path = f"json/turtles{turtle_id}_positions.json"
+        content = storage_handler.load_file(turtles_info_path)
+        data = json.loads(content)
+        # Ensure the turtles table exists
+        database_handler.execute_query("""
                     CREATE TABLE IF NOT EXISTS turtle_pos (
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
                         turtle_id INTEGER,
                         x REAL,
-                        y REAL
+                        y REAL,
+                        date REAL
                     )
                 """)
 
-                for position in data.get('results'):
-                    if "lambda" in position:
-                        position_data = position.get("lambda", {})
-                        x = position_data.get("Lat")
-                        y = position_data.get("Lng")
+        for position in data.get('results'):
+            if "data" in position:
+                position_data = position.get("data", {})
+                x = position_data.get("Lat")
+                y = position_data.get("Lng")
+                date = position_data.get("Collected")
 
-                        # Insert the position into the database
-                        cursor.execute("""
-                            INSERT INTO turtle_pos (turtle_id, x, y)
-                            VALUES (?, ?, ?)
-                        """, (turtle_id, x, y))
+                # Insert the position into the database
+                database_handler.execute_query("""
+                                 INSERT INTO turtle_pos (turtle_id, x, y,date)
+                                 VALUES (?, ?, ?,?)
+                             """, (turtle_id, x, y, date))
 
-                # Commit the transaction
-                conn.commit()
-                logging.info(f"Turtle positions for turtle_id={turtle_id} parsed and saved successfully.")
+
     except FileNotFoundError:
-        logging.warning(f"File for turtle_id={turtle_id} not found.")
+        logging.error("Turtles info JSON file not found.")
     except Exception as e:
-        if 'conn' in locals():
-            conn.rollback()  # Rollback in case of any error
-        logging.error(f"Error processing turtle positions for turtle_id={turtle_id}: {e}")
-    finally:
-        if 'conn' in locals():
-            cursor.close()
-            conn.close()
+        logging.error(f"An error occurred: {e}")
+        database_handler.rollback()

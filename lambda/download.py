@@ -53,7 +53,7 @@ def download_turtles_positions(turtle_id: int, storage_handler: StorageHandler,
     try:
         response = requests.get(url, timeout=5)
         response.raise_for_status()
-        storage_handler.save_file(f'turtles{turtle_id}_positions.json', response.text)
+        storage_handler.save_file(f'json/turtles{turtle_id}_positions.json', response.text)
         return {True: ""}
 
     except requests.exceptions.HTTPError as err:
