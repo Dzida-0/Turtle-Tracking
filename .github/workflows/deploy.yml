@@ -44,24 +44,16 @@ jobs:
         zip -r ../function.zip .
         cd ..
 
-   # Step 6: Read the .env file and export variables for Lambda
+  # Step 6: Set environment variables for Lambda from GitHub Secrets
     - name: Set environment variables for Lambda
       run: |
-        # Check if .env file exists
-        if [ -f .env ]; then
-          echo "Found .env file, exporting variables"
-          # Export the environment variables from .env
-          export $(cat .env | xargs)
-        else
-          echo ".env file not found"
-        fi
-
-        # Create a formatted string with the environment variables
-        ENV_VARS=$(cat .env | awk -F '=' '{print $1"="$2}' | tr '\n' ',' | sed 's/,$//')
+        # Prepare environment variables for Lambda from GitHub Secrets
+        ENV_VARS="S3_BUCKET_NAME=${{ secrets.S3_BUCKET_NAME }},RDS_HOST=${{ secrets.RDS_HOST }},RDS_USER=${{ secrets.RDS_USER }},RDS_PASSWORD=${{ secrets.RDS_PASSWORD }},RDS_DATABASE=${{ secrets.RDS_DATABASE }}"
 
         # Update Lambda function with the environment variables
         aws lambda update-function-configuration \
           --function-name test \
+          --region ${{ secrets.AWS_DEFAULT_REGION }} \
           --environment "Variables={$ENV_VARS}"
 
 
