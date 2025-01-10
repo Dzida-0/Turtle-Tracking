@@ -33,6 +33,9 @@ class Turtle(db.Model):
     project_name = db.Column(db.String(100))
     biography = db.Column(db.Text)
     description = db.Column(db.Text)
+    photo = db.Column(db.Boolean)
+    distance_from_last = db.Column(db.Float)
+    avg_speed_from_last = db.Column(db.Float)
 
 
 class TurtlePosition(db.Model):

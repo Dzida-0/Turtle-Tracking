@@ -1,8 +1,8 @@
 import logging
 import os
-from .database_handler import DatabaseHandler
-from .storage_handler import StorageHandler
-from .parse import parse_turtle_info,parse_turtle_positions
+from database_handler import DatabaseHandler
+from storage_handler import StorageHandler
+from parse import parse_turtle_info,parse_turtle_positions
 
 def lambda_handler(event, context):
     if 'AWS_LAMBDA_FUNCTION_NAME' in os.environ:

@@ -4,3 +4,8 @@
 .pytest_cache/
 __pycache__/
 venv/
+.lambda_function/
+.tests/
+.gitignore
+.LICENCE
+.turtle-tracking-production.pem
