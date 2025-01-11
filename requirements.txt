@@ -6,6 +6,7 @@ branca==0.8.1
 certifi==2024.12.14
 charset-normalizer==3.4.1
 click==8.1.8
+cryptography
 colorama==0.4.6
 dnspython==2.7.0
 email_validator==2.2.0

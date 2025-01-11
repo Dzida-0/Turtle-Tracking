@@ -168,3 +168,5 @@ cython_debug/
 
 # AWS secret keys
 *.pem
+storage/
+
