@@ -44,3 +44,4 @@ class TurtlePosition(db.Model):
     turtle_id = db.Column(db.Integer, nullable=False)
     x = db.Column(db.Float, nullable=False)
     y = db.Column(db.Float, nullable=False)
+    date = db.Column(db.Text)

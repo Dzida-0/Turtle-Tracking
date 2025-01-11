@@ -1,25 +1,18 @@
 /* Top bar */
-$top-bar-text-size: 1.2rem;
-
 .navbar {
   background-color: var(--primary-color);
-
+  /* menu and color-menu */
   .menu-divider{
     padding: 0;
     margin: 0;
-
-
   }
-
-
-/* Styling for the color menu */
-.color-menu-li {
-   /* Pushes the color menu to the right */
-  position: absolute;
-  right: 10px;
-  top: 10px;
-}
-
+  /* Styling for the color menu */
+  .color-menu-li {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+  }
+  /* Main menu */
   /* Vertical layout */
   .main-menu{
     padding: 0;
@@ -39,11 +32,14 @@ $top-bar-text-size: 1.2rem;
       a {
         color: var(--secondary-color);
         text-decoration: none;
-        font-size: $top-bar-text-size;
+        font-size: 1.2rem;
 
         &:hover {
           text-decoration: underline;
         }
+      }
+      &:hover {
+        background-color: var(--primary-color-dark);
       }
     }
     .menu-li:hover {
@@ -54,7 +50,7 @@ $top-bar-text-size: 1.2rem;
   /* Welcome text */
   span {
       color: var(--secondary-color);
-      font-size: $top-bar-text-size;
+      font-size: 1.2rem;
     }
 
   /* Favorites menu */
@@ -63,30 +59,36 @@ $top-bar-text-size: 1.2rem;
     position: absolute ;
     top: 100%;
     left: 0;
-
     background-color: var(--primary-color);
     list-style: none;
     margin: 0;
     padding: 0;
     border-radius: 5px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     z-index: 1000;
-  }
-  .dropdown-menu-turtles a {
-    color: var(--text-color);
-    padding: 10px 20px;
-    display: block;
-    white-space: nowrap;
+
+    a {
+      color: var(--text-color);
+      padding: 10px 20px;
+      display: block;
+      white-space: nowrap;
+    }
+
+    span{
+      width: auto;
+    }
+
   }
 
-  .turtle-list-nav:hover +  .dropdown-menu-turtles {
+  .turtle-list-box:hover >  .dropdown-menu-turtles {
       display: block;
   }
 
    .dropdown-menu-turtles:hover{
      display: block;
   }
-   .dropdown-menu-turtles button {
+
+  .dropdown-menu-turtles button {
     color: white;
     padding: 10px 20px;
     display: block;
@@ -94,41 +96,44 @@ $top-bar-text-size: 1.2rem;
   }
 
   /* Color menu */
-
-
   .color-menu {
     position: center;
-    width: 15px;
-    height: 15px;
+    width: 30px;
+    height: 30px;
   }
-
-
   .dropdown-color-menu {
     display: none;
     position: absolute ;
     top: 100%;
     right: 0;
+    width: 200px;
+    height: 120px;
     list-style: none;
     margin: 0;
     padding: 0;
     border-radius: 5px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     z-index: 1000;
-
-
     .color-box {
+      height: 40px;
       .color-palette {
         display: flex;
         gap: 5px;
+        list-style: none;
         .b {
-          height: 10px;
-          width: auto;
-          border-radius: 5px;
+          list-style: none;
+          padding: 2px;
+          height: 20px;
+          width: 20px;
+          border-radius: 10px;
           border: 1px solid #000000;
         }
       }
     }
-
+    li{
+      marker: none;
+      background-color: var(--primary-color);
+    }
     li:hover{
         background-color: var(--primary-color-dark);
       }
@@ -150,6 +155,21 @@ $top-bar-text-size: 1.2rem;
     }
 
     .theme-2 {
+     .b1{
+         background-color: var(--primary-color);
+      }
+      .b2{
+         background-color: var(--secondary-color);
+      }
+      .b3{
+         background-color: var(--background-color);
+      }
+      .b4{
+         background-color: var(--text-color);
+      }
+    }
+
+    .theme-3 {
      .b1{
          background-color: var(--primary-color);
       }

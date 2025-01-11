@@ -2,17 +2,17 @@
     <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <meta name="csrf-token" content="{{ csrf_token }}">
-
+        <meta name="csrf-token" content="{{ csrf_token() }}">
         <link rel="stylesheet" href="{{url_for('static',filename='css/styles.css')}}"/>
         <title>Turtle Tracking - {% block head %}{% endblock %}</title>
+        <script src="{{ url_for('static', filename='js/theme.js') }}" defer></script>
     </head>
     <body>
         <nav class="navbar">
 
                     <ul class="main-menu">
                         <li class="menu-li"><a href="{{ url_for('main.index') }}">Home</a></li>
-                        <li class="menu-li"><a class = "turtle-list-nav" href="{{ url_for('turtle.turtles') }}">Turtles</a>
+                        <li class="menu-li turtle-list-box"><a class = "turtle-list-nav" href="{{ url_for('turtle.turtles') }}">Turtles</a>
                              <ul class="dropdown-menu-turtles">
                                 {% for turtle in favorites %}
                                     <li><a href="{{ url_for('turtle.turtle', turtle_id=turtle.id) }}">{{ turtle.name }}</a></li>
@@ -37,7 +37,7 @@
                 <div class="color-menu-li"> <img src="{{ url_for('static', filename='pictures/color-icon.png')}}" class="color-menu">
                         <ul class="dropdown-color-menu">
                             <li>
-                                <div class="color-box light-theme" onclick="switchTheme('theme-1')">
+                                <div class="color-box theme-1" onclick="switchTheme('theme-1')">
                                     <ul class="color-palette">
                                         <li class="b1 b"></li>
                                         <li class="b2 b"></li>
@@ -47,7 +47,17 @@
                                 </div>
                             </li>
                             <li>
-                                <div class="color-box dark-theme" onclick="switchTheme('theme-2')">
+                                <div class="color-box theme-2" onclick="switchTheme('theme-2')">
+                                    <ul class="color-palette">
+                                        <li class="b1 b"></li>
+                                        <li class="b2 b"></li>
+                                        <li class="b3 b"></li>
+                                        <li class="b4 b"></li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="color-box theme-3" onclick="switchTheme('theme-3')">
                                     <ul class="color-palette">
                                         <li class="b1 b"></li>
                                         <li class="b2 b"></li>
@@ -71,5 +81,4 @@
         {% endwith %}
         {% block body %} {% endblock %}
     </body>
-<script src="{{ url_for('static', filename='js/theme.js') }}" defer></script>
     </html>

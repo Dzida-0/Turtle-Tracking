@@ -1,13 +1,18 @@
-from flask import render_template, Blueprint, current_app
+import logging
+
+from flask import render_template, Blueprint, current_app, abort, session, request, jsonify
 import os
 from flask import current_app
 import folium
+from flask_login import current_user
 from folium.plugins import TimestampedGeoJson
 from folium import Popup
 from branca.element import Template, MacroElement
 import folium
 from folium.plugins import TimestampedGeoJson
 import os
+from turtle_app.models import Turtle
+from ..extensions import db
 
 main_bp = Blueprint('main', __name__)
 
@@ -115,4 +120,51 @@ def create_animated_path():
 
 @main_bp.route('/')
 def index():
-    return render_template('index.html')
+    all_turtles = Turtle.query.all()
+    if not all_turtles:
+        abort(500)
+    favorites = []
+    if current_user.is_authenticated:
+        favorites = current_user.favorites
+    else:
+        session_favorites = session.get('favorites', [])
+        favorites = Turtle.query.filter(Turtle.id.in_(session_favorites)).all()
+    return render_template('index.html', favorites=favorites)
+
+
+@main_bp.route('/update_favorite', methods=['POST'])
+def update_favorite():
+    data = request.get_json()
+    logging.warning(data)
+    turtle_id = data.get('turtle_id')
+    is_favorite = data.get('favorite')
+
+    if not turtle_id:
+        return jsonify({'success': False, 'error': 'Turtle ID is missing'}), 400
+
+    if current_user.is_authenticated:
+        # Update the database for the logged-in user
+        turtle = Turtle.query.get(turtle_id)
+        if not turtle:
+            return jsonify({'success': False, 'error': 'Turtle not found'}), 404
+
+        if is_favorite:
+            if turtle not in current_user.favorites:
+                current_user.favorites.append(turtle)
+        else:
+            if turtle in current_user.favorites:
+                current_user.favorites.remove(turtle)
+
+        db.session.commit()
+    else:
+        # Update the session for guests
+        session_favorites = session.get('favorites', [])
+        if is_favorite:
+            if turtle_id not in session_favorites:
+                session_favorites.append(turtle_id)
+        else:
+            if turtle_id in session_favorites:
+                session_favorites.remove(turtle_id)
+        session['favorites'] = session_favorites
+
+    return jsonify({'success': True})

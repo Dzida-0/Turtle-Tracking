@@ -52,12 +52,13 @@ def turtle(turtle_id):
 
     if flask_config == 'development':
         # Check local storage for turtle_{turtle_id}.png
-        picture_path = os.path.join('/storage', 'photos', f'turtle_{turtle_id}.png')
+        picture_path = os.path.join('../storage', 'photos', f'turtle_{turtle_id}.png')
+        logging.warning(picture_path)
         if os.path.exists(picture_path):
-            picture_url = os.path.join('/storage', 'photos', f'turtle_{turtle_id}.png')
+            picture_url = os.path.join('../../storage', 'photos', f'turtle_{turtle_id}.png')
     elif flask_config == 'production':
         # Check S3 bucket for turtle_{turtle_id}.png
-        s3_bucket = 'your-s3-bucket-name'
+        s3_bucket = os.getenv('S3_BUCKET_NAME')
         s3_client = boto3.client('s3')
 
         # Check if the file exists in the S3 bucket
