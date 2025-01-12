@@ -13,6 +13,7 @@ body {
   margin: 0;
 }
 
+/* Login form*/
 .login {
   padding: 30px;
   border-radius: 10px;
@@ -63,20 +64,47 @@ h2 {
 
 }
 
+/* Register form*/
 .register{
+  width: 100vw;
+  height: 100vh;
   background-color: var(--background-color);
-  display: flex;
-  align-items: center;
-  justify-content: center;
 
   h2{
+    padding-top: 5%;
     align-items: center;
     text-align: center;
+    font-size: 3rem;
+    color: var(--text-color);
   }
 
-
   .register-box{
+    align-items: center;
+    text-align: center;
 
+    .input-text{
+      padding-bottom: 8px;
+      color: var(--text-color);
+      font-size: 1.3rem;
+      input{
+        height: 25px;
+      }
+    }
+
+    .submit-box {
+      align-content: center;
+
+      input {
+        width: 200px;
+        height: 35px;
+        background-color: var(--primary-color);
+        color: var(--text-color);
+
+        &:hover {
+          background-color: var(--primary-color-dark);
+        }
+      }
+    }
   }
 }
 

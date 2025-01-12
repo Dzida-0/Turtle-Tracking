@@ -51,7 +51,6 @@
   gap: 20px;
   margin: 20px;
   /* Single turtle */
-  /* Turtle picture */
 }
 .turtle-list .turtle-item {
   display: flex;
@@ -61,45 +60,54 @@
   border: 2px solid var(--text-color);
   border-radius: 10px;
   transition: opacity 0.3s ease;
+  /* Turtle picture */
   /* hover over */
 }
-.turtle-list .turtle-item:hover {
-  background-color: var(--primary-color-dark);
-}
-.turtle-list .turtle-name {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.turtle-list .turtle-info {
-  background-color: var(--primary-color);
-}
-.turtle-list .turtle-info:hover {
-  background-color: var(--primary-color-dark);
-}
-.turtle-list .turtle-info a {
-  text-decoration: none;
-  color: inherit;
-}
-.turtle-list .turtle-info a:visited {
-  color: inherit;
-}
-.turtle-list .turtle-item img.turtle-picture {
-  width: 80px;
-  height: 80px;
+.turtle-list .turtle-item .turtle-picture {
+  width: 110px;
+  height: 110px;
   border-radius: 50%;
   margin-right: 15px;
   object-fit: cover;
   border: 2px solid var(--text-color);
 }
-.turtle-list .favorite-label {
+.turtle-list .turtle-item:hover {
+  background-color: var(--primary-color-dark);
+}
+.turtle-list .turtle-item .turtle-info {
+  background-color: var(--primary-color);
+}
+.turtle-list .turtle-item .turtle-info:hover {
+  background-color: var(--primary-color-dark);
+}
+.turtle-list .turtle-item .turtle-info a {
+  text-decoration: none;
+  color: inherit;
+}
+.turtle-list .turtle-item .turtle-info a:visited {
+  color: inherit;
+}
+.turtle-list .turtle-item .turtle-info .turtle-description {
+  font-size: 1.1rem;
+  font-style: italic;
+  color: var(--text-color);
+}
+.turtle-list .turtle-item .turtle-info .turtle-name {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.4rem;
+  height: 70px;
+  color: var(--text-color);
+}
+.turtle-list .turtle-item .turtle-info .turtle-name .favorite-label {
   display: inline-block;
   cursor: pointer;
 }
-.turtle-list .favorite-label .favorite-checkbox {
+.turtle-list .turtle-item .turtle-info .turtle-name .favorite-label .favorite-checkbox {
   display: none;
 }
-.turtle-list .favorite-label .favorite-icon {
+.turtle-list .turtle-item .turtle-info .turtle-name .favorite-label .favorite-icon {
   width: 24px;
   height: 24px;
   display: inline-block;
@@ -107,7 +115,7 @@
   background-size: cover;
   transition: background 0.3s ease;
 }
-.turtle-list .favorite-label .favorite-checkbox:checked + .favorite-icon {
+.turtle-list .turtle-item .turtle-info .turtle-name .favorite-label .favorite-checkbox:checked + .favorite-icon {
   background-image: url("../pictures/heart_red.png");
 }
 
@@ -128,8 +136,10 @@
 }
 .navbar .color-menu-li {
   position: absolute;
-  right: 10px;
-  top: 10px;
+  right: 0;
+  top: 0;
+  height: 42px;
+  width: 4%;
 }
 .navbar .main-menu {
   padding: 0;
@@ -138,7 +148,7 @@
   display: flex;
   align-items: center;
   justify-content: space-around;
-  width: 90%;
+  width: 96%;
   /* Menu */
 }
 .navbar .main-menu li {
@@ -184,7 +194,10 @@
   white-space: nowrap;
 }
 .navbar .dropdown-menu-turtles span {
-  width: auto;
+  color: var(--secondary-color);
+  padding: 10px 20px;
+  display: block;
+  white-space: nowrap;
 }
 .navbar .turtle-list-box:hover > .dropdown-menu-turtles {
   display: block;
@@ -199,6 +212,7 @@
   white-space: nowrap;
 }
 .navbar .color-menu {
+  padding-top: 6px;
   position: center;
   width: 30px;
   height: 30px;
@@ -208,8 +222,8 @@
   position: absolute;
   top: 100%;
   right: 0;
-  width: 200px;
-  height: 120px;
+  width: 180px;
+  height: 180px;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -219,18 +233,18 @@
   /* Theme color boxes */
 }
 .navbar .dropdown-color-menu .color-box {
-  height: 40px;
+  height: 60px;
 }
 .navbar .dropdown-color-menu .color-box .color-palette {
   display: flex;
-  gap: 5px;
+  padding: 10px;
+  gap: 10px;
   list-style: none;
 }
 .navbar .dropdown-color-menu .color-box .color-palette .b {
   list-style: none;
-  padding: 2px;
-  height: 20px;
-  width: 20px;
+  height: 30px;
+  width: 30px;
   border-radius: 10px;
   border: 1px solid #000000;
 }
@@ -346,6 +360,7 @@ body {
   margin: 0;
 }
 
+/* Login form*/
 .login {
   padding: 30px;
   border-radius: 10px;
@@ -390,15 +405,42 @@ body {
   background-color: #2980b9;
 }
 
+/* Register form*/
 .register {
+  width: 100vw;
+  height: 100vh;
   background-color: var(--background-color);
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 .register h2 {
+  padding-top: 5%;
   align-items: center;
   text-align: center;
+  font-size: 3rem;
+  color: var(--text-color);
+}
+.register .register-box {
+  align-items: center;
+  text-align: center;
+}
+.register .register-box .input-text {
+  padding-bottom: 8px;
+  color: var(--text-color);
+  font-size: 1.3rem;
+}
+.register .register-box .input-text input {
+  height: 25px;
+}
+.register .register-box .submit-box {
+  align-content: center;
+}
+.register .register-box .submit-box input {
+  width: 200px;
+  height: 35px;
+  background-color: var(--primary-color);
+  color: var(--text-color);
+}
+.register .register-box .submit-box input:hover {
+  background-color: var(--primary-color-dark);
 }
 
 /*# sourceMappingURL=styles.css.map */

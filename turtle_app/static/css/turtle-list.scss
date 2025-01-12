@@ -1,17 +1,19 @@
 /* Turtle list*/
-$list-gap: 20px;
-
 .toggle-buttons{
   display: flex;
   align-items: center;
   justify-content: space-around;
+
   button{
+    //all: unset;
     width: auto;
     height: auto;
     padding: 20px 20px 20px 20px;
+
     span{
       color: var(--text-color);
     }
+
     .icon{
       width: 40px;
       height: 40px;
@@ -22,7 +24,7 @@ $list-gap: 20px;
 .turtle-list {
     display: flex;
     flex-direction: column;
-    gap: $list-gap;
+    gap: 20px;
     margin: 20px;
 
   /* Single turtle */
@@ -34,59 +36,73 @@ $list-gap: 20px;
     border: 2px solid var(--text-color);
     border-radius: 10px;
     transition: opacity 0.3s ease;
+
+    /* Turtle picture */
+    .turtle-picture {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      margin-right: 15px;
+      object-fit: cover;
+      border: 2px solid var(--text-color);
+    }
+
     /* hover over */
     &:hover{
       background-color: var(--primary-color-dark);
     }
-  }
 
-  .turtle-name{
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .turtle-info{
-    background-color: var(--primary-color);
-    &:hover{
-      background-color: var(--primary-color-dark);
-    }
-    a {
-      text-decoration: none;
-      color: inherit;
-      &:visited{
-        color: inherit;
+    .turtle-info{
+      background-color: var(--primary-color);
+
+      &:hover{
+        background-color: var(--primary-color-dark);
       }
-    }
-  }
 
-   /* Turtle picture */
-  .turtle-item img.turtle-picture {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    margin-right: 15px;
-    object-fit: cover;
-    border: 2px solid var(--text-color);
-  }
+      a {
+        text-decoration: none;
+        color: inherit;
+        &:visited{
+          color: inherit;
+        }
+      }
 
-  .favorite-label {
-  display: inline-block;
-  cursor: pointer;
+      .turtle-description{
+        font-size: 1.1rem;
+        font-style: italic;
+        color: var(--text-color);
+      }
 
-    .favorite-checkbox {
-      display: none;
-    }
+      .turtle-name{
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 1.4rem;
+        height: 70px;
+        color: var(--text-color);
 
-    .favorite-icon {
-      width: 24px;
-      height: 24px;
-      display: inline-block;
-      background-image: url("../pictures/heart.png");
-      background-size: cover;
-      transition: background 0.3s ease;
-    }
-    .favorite-checkbox:checked + .favorite-icon {
-      background-image: url('../pictures/heart_red.png');
+        .favorite-label {
+          display: inline-block;
+          cursor: pointer;
+
+          .favorite-checkbox {
+            display: none;
+          }
+
+          .favorite-icon {
+            width: 24px;
+            height: 24px;
+            display: inline-block;
+            background-image: url("../pictures/heart.png");
+            background-size: cover;
+            transition: background 0.3s ease;
+          }
+
+          .favorite-checkbox:checked + .favorite-icon {
+            background-image: url('../pictures/heart_red.png');
+          }
+        }
+      }
     }
   }
 }

@@ -2,7 +2,8 @@ import logging
 import os
 
 import boto3
-from flask import render_template, Blueprint, abort, request, jsonify, session, send_from_directory, url_for
+from flask import render_template, Blueprint, abort, request, jsonify, session, send_from_directory, url_for, \
+    current_app
 from flask_login import current_user, user_logged_out, user_logged_in
 
 from .main import create_interactive_map
@@ -37,6 +38,14 @@ def generated_map(turtle_id):
     return send_from_directory(map_path,'generated_map.html')
 
 
+@turtle_bp.route('/photos/<filename>')
+def serve_photo(filename):
+    base_dir = current_app.root_path
+    photos_dir = os.path.join(base_dir, 'storage', 'photos')
+    photos_dir = photos_dir.replace('turtle_app' + os.sep, '')
+    return send_from_directory(photos_dir, filename)
+
+
 @turtle_bp.route('/turtle/<int:turtle_id>')
 def turtle(turtle_id):
     turtle = Turtle.query.get(turtle_id)
@@ -52,10 +61,8 @@ def turtle(turtle_id):
 
     if flask_config == 'development':
         # Check local storage for turtle_{turtle_id}.png
-        picture_path = os.path.join('../storage', 'photos', f'turtle_{turtle_id}.png')
-        logging.warning(picture_path)
-        if os.path.exists(picture_path):
-            picture_url = os.path.join('../../storage', 'photos', f'turtle_{turtle_id}.png')
+        picture_url = url_for('turtle.serve_photo', filename=f'turtle_{turtle_id}.png')
+
     elif flask_config == 'production':
         # Check S3 bucket for turtle_{turtle_id}.png
         s3_bucket = os.getenv('S3_BUCKET_NAME')
@@ -73,7 +80,18 @@ def turtle(turtle_id):
     if not picture_url:
         picture_url = url_for('static', filename='pictures/turtle.png')
 
-    return render_template('turtle.html', turtle=turtle, positions=positions, picture_url=picture_url)
+    all_turtles = Turtle.query.all()
+    if not all_turtles:
+        abort(500)
+    favorites = []
+
+    if current_user.is_authenticated:
+        favorites = current_user.favorites
+    else:
+        session_favorites = session.get('favorites', [])
+        favorites = Turtle.query.filter(Turtle.id.in_(session_favorites)).all()
+
+    return render_template('turtle.html', turtle=turtle, positions=positions, picture_url=picture_url,favorites=favorites)
 
 
 @turtle_bp.route('/update_favorite', methods=['POST'])
